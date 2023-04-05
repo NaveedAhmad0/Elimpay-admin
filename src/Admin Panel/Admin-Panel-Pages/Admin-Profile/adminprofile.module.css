@@ -1,0 +1,33 @@
+.userHeading {
+
+    color: black;
+    font-weight: 500;
+}
+.usercardbody {
+
+     
+     
+     border-radius: 8px;
+}
+
+.userLabel {
+
+    color: black;
+    text-transform: capitalize;
+}
+.userInputs {
+
+    
+    border-radius: 30px;
+    border: 1px solid #255F92;
+}
+
+.userBtn {
+    background-color: #2D96D3;
+    width: 7rem;
+    border-radius: 20px;
+    height: 2.2rem;
+    color: white;
+}
+
+

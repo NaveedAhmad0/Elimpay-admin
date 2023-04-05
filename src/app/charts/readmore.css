@@ -1,0 +1,14 @@
+.container123{
+    margin-top: 1rem;
+    }
+/*     
+    .text{
+    display: inline;
+    width: 100%;
+    }
+     */
+    .read-or-hide{
+    color: rgb(41, 126, 223);
+    cursor: pointer;
+    }
+    

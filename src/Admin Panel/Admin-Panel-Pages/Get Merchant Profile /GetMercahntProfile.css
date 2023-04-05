@@ -1,0 +1,86 @@
+input[type=text] {
+  background-color: #fff;
+}
+
+.profile-img {
+    border-radius: 50%;
+}
+
+.userCard {
+    background-color:#fff;
+}
+
+.form-label {
+    color: #007BFF;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1;
+}
+
+.userProfileCard-2 {
+    background-color: #fff;
+}
+
+.userHeading {
+    color: black;
+    font-weight: 500;
+}
+.usercardbody {
+    border-radius: 8px;
+}
+
+.userLabel {
+
+    color: black;
+    text-transform: capitalize;
+}
+.userInputs {
+
+    
+    border-radius: 30px;
+    border: 1px solid #255F92;
+}
+
+.userBtn {
+    background-color: #2D96D3;
+    width: 7rem;
+    border-radius: 20px;
+    height: 2.2rem;
+    color: white;
+}
+
+
+.userHeading {
+
+    color: black;
+    font-weight: 500;
+}
+.usercardbody {
+
+     
+     
+     border-radius: 8px;
+}
+
+.userLabel {
+
+    color: black;
+    text-transform: capitalize;
+}
+
+.userInputs {
+
+    
+    border-radius: 30px;
+    border: 1px solid #255F92;
+}
+
+.userBtn {
+    background-color: #2D96D3;
+    width: 7rem;
+    border-radius: 20px;
+    height: 2.2rem;
+    color: white;
+}
+
+
