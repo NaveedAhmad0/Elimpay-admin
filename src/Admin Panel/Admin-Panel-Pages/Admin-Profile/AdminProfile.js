@@ -2,80 +2,29 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import ClipLoader from "react-spinners/ClipLoader";
+import API from "../../../backend";
 import styles from "./adminprofile.module.css";
 const AdminProfile = () => {
-	// const [email, setEmail] = useState("");
-	// const [userName, setUserName] = useState("");
-	// const [surName, setSurName] = useState("");
-	// const [mobile, setMobile] = useState("");
-	// const [address, setAddress] = useState("");
-	// const [province, setProvince] = useState("");
-	// const [district, setDistrict] = useState("");
-	// const [subdistrict, setSubDistrict] = useState("");
-	// const [pincode, setPincode] = useState("");
 	const [showData, setShowData] = useState([
 		{
-			userName: "",
+			name: "",
 			email: "",
-			surName: "",
+			id: 0,
 			mobile: 0,
 			address: "",
-			province: "",
-			district: "",
-			subdistrict: "",
-			pincode: "",
+			password: "",
 		},
 	]);
 	const [success, setSuccess] = useState(false);
 	const [loading, setLoading] = useState(true);
 
-	// async function onSubmit(event) {
-	// 	event.preventDefault();
-	// 	console.log(
-	// 		email,
-	// 		surName,
-	// 		mobile,
-	// 		address,
-	// 		province,
-	// 		district,
-	// 		subdistrict,
-	// 		pincode
-	// 	);
-
-	// 	try {
-	// 		const response = await axios.patch(
-	// 			`https://backend.klivepay.com/api/admin/update-profile?email=admin%40mail.com`,
-	// 			JSON.stringify({
-	// 				userName,
-	// 				surName,
-	// 				mobile,
-	// 				address,
-	// 				province,
-	// 				district,
-	// 				subdistrict,
-	// 				pincode,
-	// 			}),
-	// 			{
-	// 				headers: { "Content-Type": "application/json" },
-	// 				// withCredentials: true,
-	// 			}
-	// 		);
-
-	// 		console.log("mail", email);
-
-	// 		console.log(JSON.stringify(response?.data));
-	// 		setSuccess(true);
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// }
 	let fields = showData;
 
 	function handleValidation() {
 		let fields = showData;
 		let formIsValid = false;
 
-		console.log("AKSHDKJHSDKJHAKSHDK", Object.keys(fields).length);
+		// console.log("AKSHDKJHSDKJHAKSHDK", Object.keys(fields).length);
 		//Name
 		if (
 			Object.values(fields).every((o) => o !== null) &&
@@ -85,31 +34,33 @@ const AdminProfile = () => {
 		}
 		return formIsValid;
 	}
-
-	const loginemail = localStorage.getItem("email");
+	const token = sessionStorage.getItem("token");
+	const loginemail = sessionStorage.getItem("email");
 	useEffect(() => {
 		// const loginemail = localStorage.getItem("email");
 		axios
 			.get(
-				`https://backend.klivepay.com/api/admin/get-profile?email=${loginemail}`
+				`https://backend.elimpay.com/api/Admin/fetch-profile?email=${loginemail}`,
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
 			)
 			.then((res) => {
+				console.log(res);
 				setShowData({
-					userName: res.data.admin.name,
-					mobile: res.data.admin.mobile,
-					email: res.data.admin.email,
-					surName: res.data.admin.surName,
-					address: res.data.admin.address,
-					province: res.data.admin.province,
-					district: res.data.admin.district,
-					subdistrict: res.data.admin.subdistrict,
-					pincode: res.data.admin.pincode,
+					name: res.data.data.name,
+					mobile: res.data.data.mobile,
+					email: res.data.data.email,
+					id: res.data.data.id,
 				});
 				setLoading(false);
 				setTimeout(() => {
 					setLoading(false);
 				}, 3000);
-				console.log("DATA IS ", res.data.admin);
+				// console.log("DATA IS ", res.data.admin);
 			});
 	}, []);
 
@@ -118,20 +69,17 @@ const AdminProfile = () => {
 		if (handleValidation()) {
 			try {
 				const response = await axios
-					.patch(
-						`https://backend.klivepay.com/api/admin/update-profile?email=${loginemail}`,
+					.post(
+						`${API}Admin/update-profile`,
 						JSON.stringify({
-							userName: showData.userName,
-							surName: showData.surName,
-							mobile: parseInt(showData.mobile),
-							address: showData.address,
-							province: showData.province,
-							subdistrict: showData.subdistrict,
-							district: showData.district,
-							pincode: showData.pincode,
+							name: showData.name,
+							email: showData.email,
+							mobile: showData.mobile,
+							password: showData.password,
 						}),
 						{
 							headers: { "Content-Type": "application/json" },
+							Authorization: `Bearer ${token}`,
 							// withCredentials: true,
 						}
 					)
@@ -157,154 +105,8 @@ const AdminProfile = () => {
 	}, [success]);
 
 	return (
-		// <div className="col-12 grid-margin">
-		// 	<h4 className="card-title">Personal admin Information</h4>
-
-		// 	<div className="card">
-		// 		<div className="row flex-column mt-5 mx-auto">
-		// 			<img
-		// 				className="img-lg mx-auto rounded-circle"
-		// 				src={require("../../../assets/images/faces/face8.jpg")}
-		// 				alt="Profile"
-		// 			/>
-		// 			<div className="mt-2 mx-auto">
-		// 				<p className="mx-auto">
-		// 					Email: <span className="text-primary">info@gmail.com</span>
-		// 				</p>
-		// 			</div>
-		// 		</div>
-		// 		<div className="card-body">
-		// 			<form className="form-sample">
-		// 				<div className="row justify-content-around">
-		// 					<div className="col-md-5">
-		// 						<Form.Group className="row">
-		// 							<label htmlFor="exampleInputUsername1">System Username</label>
-		// 							<Form.Control
-		// 								type="text"
-		// 								id="exampleInputUsername1"
-		// 								onChange={(e) => setUserName(e.target.value)}
-		// 								value={userName}
-		// 								placeholder="info@gmilail.com"
-		// 								size="lg"
-		// 							/>
-		// 						</Form.Group>
-		// 					</div>
-		// 					{/* <div className="col-md-2"></div> */}
-		// 					<div className="col-md-5">
-		// 						<Form.Group>
-		// 							<label htmlFor="exampleSelectGender">Surname</label>
-		// 							<Form.Control
-		// 								type="text"
-		// 								id="exampleInputUsername1"
-		// 								onChange={(e) => setSurName(e.target.value)}
-		// 								value={surName}
-		// 								placeholder="info@gmilail.com"
-		// 								size="lg"
-		// 							/>
-		// 						</Form.Group>
-		// 					</div>
-		// 				</div>
-		// 				<div className="row justify-content-around">
-		// 					<div className="col-md-5">
-		// 						<Form.Group className="row">
-		// 							<label htmlFor="exampleInputUsername1">
-		// 								Contact Phone Number
-		// 							</label>
-		// 							<Form.Control
-		// 								type="text"
-		// 								id="exampleInputUsername1"
-		// 								onChange={(e) => setMobile(parseInt(e.target.value))}
-		// 								value={mobile}
-		// 								placeholder="info@gmilail.com"
-		// 								// size="lg"
-		// 							/>
-		// 						</Form.Group>
-		// 					</div>
-		// 					<div className="col-md-5">
-		// 						<Form.Group className="row">
-		// 							<label htmlFor="exampleInputUsername1">Address</label>
-		// 							<Form.Control
-		// 								type="text"
-		// 								onChange={(e) => setAddress(e.target.value)}
-		// 								value={address}
-		// 								id="exampleInputUsername1"
-		// 								placeholder="Full Address"
-		// 								size="lg"
-		// 							/>
-		// 						</Form.Group>
-		// 					</div>
-		// 				</div>
-		// 				<div className="row justify-content-around">
-		// 					<div className="col-md-5 ">
-		// 						<Form.Group>
-		// 							<label htmlFor="exampleSelectGender">Province</label>
-		// 							<Form.Control
-		// 								type="text"
-		// 								onChange={(e) => setProvince(e.target.value)}
-		// 								value={province}
-		// 								id="exampleInputUsername1"
-		// 								placeholder="Full Address"
-		// 								size="lg"
-		// 							/>
-		// 						</Form.Group>
-		// 					</div>
-		// 					<div className="col-md-5">
-		// 						<Form.Group>
-		// 							<label htmlFor="exampleSelectGender">District/District</label>
-		// 							<Form.Control
-		// 								type="text"
-		// 								onChange={(e) => setDistrict(e.target.value)}
-		// 								value={district}
-		// 								id="exampleInputUsername1"
-		// 								placeholder="Full Address"
-		// 								size="lg"
-		// 							/>
-		// 						</Form.Group>
-		// 					</div>
-		// 				</div>
-		// 				<div className="row justify-content-around">
-		// 					<div className="col-md-5">
-		// 						<Form.Group>
-		// 							<label htmlFor="exampleSelectGender">Sub-Division</label>
-		// 							<Form.Control
-		// 								type="text"
-		// 								onChange={(e) => setSubDistrict(e.target.value)}
-		// 								value={subdistrict}
-		// 								id="exampleInputUsername1"
-		// 								placeholder="Full Address"
-		// 								size="lg"
-		// 							/>
-		// 						</Form.Group>
-		// 					</div>
-		// 					<div className="col-md-5">
-		// 						<Form.Group>
-		// 							<label htmlFor="exampleSelectGender">Zip Code</label>
-		// 							<Form.Control
-		// 								type="text"
-		// 								onChange={(e) => setPincode(e.target.value)}
-		// 								value={pincode}
-		// 								id="exampleInputUsername1"
-		// 								placeholder="Full Address"
-		// 								size="lg"
-		// 							/>
-		// 						</Form.Group>
-		// 					</div>
-		// 				</div>
-		// 				<div className="row ">
-		// 					<div className="mx-auto col-md-11">
-		// 						<button
-		// 							onClick={(event) => onSubmit(event)}
-		// 							className="btn btn-success btn-lg btn-block rounded-pill">
-		// 							Agree
-		// 						</button>
-		// 					</div>
-		// 				</div>
-		// 			</form>
-		// 		</div>
-		// 	</div>
-		// </div>
 		<div className="col-12 grid-margin">
-			<h4 className="card-title">user Personal Information</h4>
+			<h4 className="card-title">User Personal Information</h4>
 			{loading ? (
 				<div className="row" style={{ height: "500px" }}>
 					<div className="col-12 text-center my-auto">
@@ -319,89 +121,48 @@ const AdminProfile = () => {
 							<div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 								<form className="needs-validation" novalidate>
 									<div className="form-group">
-										<label className={styles.userLabel}>first name</label>
+										<label className={styles.userLabel}>Id</label>
 										<input
-											type="year"
-											name="userName"
+											type="text"
 											onChange={(e) => {
 												setShowData({
 													...showData,
-													userName: e.target.value,
+													id: e.target.value,
 												});
 											}}
-											value={showData.userName}
+											value={showData.id}
 											className={`form-control ${styles.userInputs}`}
-											// placeholder={userName}
+											// placeholder={id}
 										/>
 
-										{fields["userName"] == null || fields["userName"] == "" ? (
+										{fields["id"] == null || fields["id"] == "" ? (
 											<span className="text-danger">Field can't be empty</span>
 										) : (
 											""
 										)}
 									</div>
-									{/* <div className="form-group">
-										<label
-											for="validationDefault01"
-											className={styles.userLabel}>
-											merchant name
-										</label>
-										<input
-											type="text"
-											name="userName"
-											onChange={(e) => {
-												setShowData({
-													...showData,
-													userName: e.target.value,
-												});
-											}}
-											id="validationCustom01"
-											required
-											value={showData.userName}
-											className={`form-control ${styles.userInputs}`}
-											placeholder="name"
-										/>
-
-										{fields["userName"] == null || fields["userName"] == "" ? (
-											<span className="text-danger">Field can't be empty</span>
-										) : (
-											""
-										)}
-									</div> */}
 								</form>
 							</div>
 
 							<div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
 								<form>
-									{/* <div className="form-group">
-										<label className={styles.userLabel}>
-											{" "}
-											merchant name english
-										</label>
-										<input
-											type="text"
-											disabled
-											className={`form-control ${styles.userInputs}`}
-											placeholder="merchant name english"
-										/>
-									</div> */}
-
 									<div className="form-group">
-										<label className={styles.userLabel}>sur name</label>
+										<label className={styles.userLabel}>first name</label>
 										<input
-											type="text"
+											type="year"
+											name="name"
 											onChange={(e) => {
 												setShowData({
 													...showData,
-													surName: e.target.value,
+													name: e.target.value,
 												});
 											}}
-											value={showData.surName}
+											value={showData.name}
 											className={`form-control ${styles.userInputs}`}
-											// placeholder={surName}
+											// placeholder={name}
 										/>
 
-										{fields["surName"] == null || fields["surName"] == "" ? (
+										{fields["name"] == null || fields["name"] == "" ? (
 											<span className="text-danger">Field can't be empty</span>
 										) : (
 											""
@@ -462,13 +223,13 @@ const AdminProfile = () => {
 						</div>
 
 						<div class="form-group">
-							<label className={styles.userLabel}>address</label>
+							<label className={styles.userLabel}>Password</label>
 							<input
 								type="text"
 								onChange={(e) => {
 									setShowData({
 										...showData,
-										address: e.target.value,
+										password: e.target.value,
 									});
 								}}
 								value={showData.address}
@@ -476,14 +237,14 @@ const AdminProfile = () => {
 								// placeholder={address}
 							/>
 
-							{fields["address"] == null || fields["address"] == "" ? (
+							{/* {fields["address"] == null || fields["address"] == "" ? (
 								<span className="text-danger">Field can't be empty</span>
 							) : (
 								""
-							)}
+							)} */}
 						</div>
 
-						<div className="row mt-5">
+						{/* <div className="row mt-5">
 							<div className="row">
 								<form className="d-flex justify-content-between">
 									<div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -587,7 +348,7 @@ const AdminProfile = () => {
 									</div>
 								</form>
 							</div>
-						</div>
+						</div> */}
 
 						{/* <button type="button" className={`btn ${styles.userBtn}`}>Finish</button> */}
 

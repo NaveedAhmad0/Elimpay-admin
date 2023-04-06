@@ -95,12 +95,13 @@ function Sidebar() {
 			<div className="text-center sidebar-brand-wrapper d-flex align-items-center">
 				<a className="sidebar-brand brand-logo text-white" href="index.html">
 					<h3 className="mt-2">
-						<img
+						{/* <img
 							className="img-sm "
 							width={60}
 							src={require("../../assets/logo/K Live Pay.png")}
 							alt="profile"
-						/>
+						/> */}
+						ELIMPAY
 					</h3>
 				</a>
 				<a

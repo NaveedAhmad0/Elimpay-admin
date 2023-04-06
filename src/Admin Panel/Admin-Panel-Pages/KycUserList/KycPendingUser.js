@@ -25,7 +25,6 @@ function KycPendingUser() {
 	const history = useHistory();
 	const [loading, setLoading] = useState(true);
 	const [ittems, setItems] = useState([]);
-	// const [invoiceRefId, setInvoiceRefId] = useState("");
 
 	console.log("items is", ittems);
 	const token = sessionStorage.getItem("token");
@@ -39,33 +38,26 @@ function KycPendingUser() {
 							"Content-Type": "application/json",
 							Authorization: `Bearer ${token}`,
 						},
-						// withCredentials: true,
 					})
 					.then((response) => {
-						// if (response == 200) {
-						// console.log("skldhf", response.data);
 						const sample = [];
-						for (let i = 0; i < response.data.data.length; i += 1) {
+						for (let i = 0; i < response.data.data.data.length; i += 1) {
 							sample.push({
-								user_id: response.data.data[i].user_id,
-								email: response.data.data[i].email,
+								user_id: response.data.data.data[i].user_id,
+								email: response.data.data.data[i].email,
 
-								mobileNum: response.data.data[i].mobileNum,
-								name: response.data.data[i].name,
-								occupation: response.data.data[i].occupation,
-								payerName: response.data.data[i].payerName,
-								amount: response.data.data[i].amount,
+								mobileNum: response.data.data.data[i].mobileNum,
+								name: response.data.data.data[i].name,
+								occupation: response.data.data.data[i].occupation,
+								payerName: response.data.data.data[i].payerName,
+								amount: response.data.data.data[i].amount,
 							});
-							// setInvoiceRefId(response.data[i].t_id);
 						}
-						// console.log("babla", response.data.data.length);
 						setItems(sample);
 						setLoading(false);
 						setTimeout(() => {
 							setLoading(false);
 						}, 3000);
-						// }
-						// const listItems = response.json();
 					});
 			} catch (error) {
 				console.log(error);
@@ -119,17 +111,8 @@ function KycPendingUser() {
 		// 		return customFunction(cellContent, row);
 		// 	},
 		// },
-		// {
-		// 	dataField: "name",
-		// 	isDummyField: true,
-		// 	text: "Edit role",
-		// 	headerClasses: "deal-header",
-		// 	formatter: (cellContent, row) => {
-		// 		return customFunction(cellContent, row);
-		// 	},
-		// },
 	];
-	// console.log("list of item", ittems);
+
 	const customFunction = (cellContent, row) => {
 		return (
 			<h5>
@@ -162,7 +145,6 @@ function KycPendingUser() {
 				</div>
 			</div>
 
-			{/* <MerchantForm /> */}
 			{loading ? (
 				<div className="row" style={{ height: "500px" }}>
 					<div className="col-12 text-center my-auto">

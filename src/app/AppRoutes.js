@@ -2,6 +2,8 @@ import React, { Component, Suspense, lazy } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import Spinner from "../app/shared/Spinner";
+import { UserRoleContextConsumer } from "../context/userContext";
+
 require("dotenv").config();
 
 // const HomePage = lazy(() => import("../Homepage/HomePage"));
@@ -62,7 +64,7 @@ const GetUserProfile = lazy(() =>
 );
 const GetMerchantProfile = lazy(() =>
 	import(
-		"../Admin Panel/Admin-Panel-Pages/Get Merchant Profile /GetMerchantProfile"
+		"../Admin Panel/Admin-Panel-Pages/Get Merchant Profile/GetMerchantProfile"
 	)
 );
 const AdminChangePassword = lazy(() =>
@@ -95,101 +97,92 @@ const TransactionDetails = lazy(() =>
 );
 const TxnDetails = lazy(() =>
 	import(
-		"../Admin Panel/Admin-Panel-Pages/Transaction Details /Txn Details/TxnDetails"
+		"../Admin Panel/Admin-Panel-Pages/Transaction Details/Txn Details/TxnDetails"
 	)
 );
 
-class AppRoutes extends Component {
-	render() {
-		return (
-			<Suspense fallback={<Spinner />}>
-				<Switch>
-					{/* <Route exact path="/homepage" component={HomePage} /> */}
-					{/* <Route exact path="/homepage" component={UserLogin} /> */}
-					<Route path="/admin/basic-ui/buttons" component={Buttons} />
-					<Route path="/admin/basic-ui/dropdowns" component={Dropdowns} />
+function AppRoutes() {
+	const loggedIn = (
+		<Switch>
+			<Route exact path="/admin/dashboard" component={AdminDashboard} />
 
-					<Route
-						path="/admin/form-Elements/basic-elements"
-						component={BasicElements}
-					/>
+			<Route path="/admin/KycPendingUsers" component={KycPendingUser} />
+			<Route path="/admin/KycCompletedUsers" component={KycCompletedUsers} />
+			<Route
+				path="/admin/KycCompletePartners"
+				component={KycCompletePartners}
+			/>
+			<Route path="/admin/KycPendingPartners" component={KycPendingPartners} />
+			<Route path="/admin/WithdrawalDetails" component={WithdrawalDetails} />
+			<Route path="/admin/AdminVoid" component={AdminVoid} />
+			<Route path="/admin/AdminRefund" component={AdminRefund} />
+			<Route path="/admin/update-profile" component={AdminProfile} />
+			<Route path="/admin/get-profile" component={GetAdminProfile} />
+			<Route exact path="/admin/getUserProfile" component={GetUserProfile} />
+			<Route
+				exact
+				path="/admin/getMerchantProfile"
+				component={GetMerchantProfile}
+			/>
+			<Route
+				path="/admin/AdminChangePassword"
+				component={AdminChangePassword}
+			/>
+			<Route path="/admin/TransactionDetails" component={TransactionDetails} />
+			<Route
+				path="/admin/AdminMerchantProfile"
+				component={AdminMerchantProfile}
+			/>
+			<Route path="/admin/AdminManageUser" component={AdminManageUser} />
+			<Route path="/admin/AdminManageRole" component={AdminManageRole} />
+			<Route path="/admin/projectsList" component={ProjectList} />
+			<Route path="/admin/CreateProject" component={CreateProject} />
+			<Route path="/admin/TxnDetails" component={TxnDetails} />
+		</Switch>
+	);
 
-					<Route path="/admin/tables/basic-table" component={BasicTable} />
+	const notLoggedIn = (
+		<Switch>
+			{/* <Route exact path="/homepage" component={HomePage} /> */}
+			{/* <Route exact path="/homepage" component={UserLogin} /> */}
+			<Route path="/admin/basic-ui/buttons" component={Buttons} />
+			<Route path="/admin/basic-ui/dropdowns" component={Dropdowns} />
+			<Route exact path="/admin/forgotPassword" component={ForgotPassword} />
 
-					<Route path="/admin/icons/mdi" component={Mdi} />
+			<Route
+				path="/admin/form-Elements/basic-elements"
+				component={BasicElements}
+			/>
 
-					<Route path="/admin/charts/chart-js" component={ChartJs} />
+			<Route path="/admin/tables/basic-table" component={BasicTable} />
 
-					<Route path="/admin/user-pages/login-1" component={Login} />
-					<Route path="/admin/user-pages/register-1" component={Register1} />
+			<Route path="/admin/icons/mdi" component={Mdi} />
 
-					{/*------------------------- ADMIN PANEL ROUTES -------------------------- */}
-					<Route exact path="/admin/login" component={AdminLogin} />
+			<Route path="/admin/charts/chart-js" component={ChartJs} />
 
-					<Route exact path="/admin/dashboard" component={AdminDashboard} />
+			<Route path="/admin/user-pages/login-1" component={Login} />
+			<Route path="/admin/user-pages/register-1" component={Register1} />
 
-					<Route path="/admin/KycPendingUsers" component={KycPendingUser} />
-					<Route
-						path="/admin/KycCompletedUsers"
-						component={KycCompletedUsers}
-					/>
-					<Route
-						path="/admin/KycCompletePartners"
-						component={KycCompletePartners}
-					/>
-					<Route
-						path="/admin/KycPendingPartners"
-						component={KycPendingPartners}
-					/>
-					<Route
-						path="/admin/WithdrawalDetails"
-						component={WithdrawalDetails}
-					/>
-					<Route path="/admin/AdminVoid" component={AdminVoid} />
-					<Route path="/admin/AdminRefund" component={AdminRefund} />
-					<Route path="/admin/update-profile" component={AdminProfile} />
-					<Route path="/admin/get-profile" component={GetAdminProfile} />
-					<Route
-						exact
-						path="/admin/getUserProfile"
-						component={GetUserProfile}
-					/>
-					<Route
-						exact
-						path="/admin/getMerchantProfile"
-						component={GetMerchantProfile}
-					/>
-					<Route
-						path="/admin/AdminChangePassword"
-						component={AdminChangePassword}
-					/>
-					<Route
-						path="/admin/TransactionDetails"
-						component={TransactionDetails}
-					/>
-					<Route
-						exact
-						path="/admin/forgotPassword"
-						component={ForgotPassword}
-					/>
-					<Route
-						path="/admin/AdminMerchantProfile"
-						component={AdminMerchantProfile}
-					/>
-					<Route path="/admin/AdminManageUser" component={AdminManageUser} />
-					<Route path="/admin/AdminManageRole" component={AdminManageRole} />
-					<Route path="/admin/projectsList" component={ProjectList} />
-					<Route path="/admin/CreateProject" component={CreateProject} />
-					<Route path="/admin/TxnDetails" component={TxnDetails} />
+			{/*------------------------- ADMIN PANEL ROUTES -------------------------- */}
+			<Route exact path="/admin/login" component={AdminLogin} />
 
-					<Route path="/admin/error-pages/error-404" component={Error404} />
-					<Route path="/admin/error-pages/error-500" component={Error500} />
+			<Route path="/admin/error-pages/error-404" component={Error404} />
+			<Route path="/admin/error-pages/error-500" component={Error500} />
 
-					<Redirect to="/admin/login" />
-				</Switch>
-			</Suspense>
-		);
-	}
+			<Redirect to="/admin/login" />
+		</Switch>
+	);
+	return (
+		<Suspense fallback={<Spinner />}>
+			<UserRoleContextConsumer>
+				{(value) =>
+					value?.loggedIn || sessionStorage.getItem("token")
+						? loggedIn
+						: notLoggedIn
+				}
+			</UserRoleContextConsumer>
+		</Suspense>
+	);
 }
 
 export default AppRoutes;

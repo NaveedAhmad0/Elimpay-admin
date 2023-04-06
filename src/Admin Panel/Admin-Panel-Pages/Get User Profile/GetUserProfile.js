@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import API from "../../../backend";
 import AdminTable from "../../Admin-Panel-Components/Admin-Panel-Table/AdminTable";
-import TxnList from "../Transaction Details /User Tnx List/UserTxnList";
+import TxnList from "../Transaction Details/User Tnx List/UserTxnList";
 import styles from "./GetUserProfile.css";
 
 const GetUserProfile = () => {

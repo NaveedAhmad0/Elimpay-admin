@@ -46,14 +46,14 @@ const AdminManageUser = () => {
 						console.log("RES", response);
 						const sample = [];
 
-						for (let i = 0; i < response.data.data.length; i += 1) {
+						for (let i = 0; i < response.data.data.data.length; i += 1) {
 							sample.push({
-								id: response.data.data[i].id,
-								FirstName: response.data.data[i].name,
-								email: response.data.data[i].email,
-								mobile: response.data.data[i].mobileNum,
-								balance: response.data.data[i].balance,
-								redemptiondate: response.data.data[i].email,
+								id: response.data.data.data[i].id,
+								FirstName: response.data.data.data[i].name,
+								email: response.data.data.data[i].email,
+								mobile: response.data.data.data[i].mobileNum,
+								balance: response.data.data.data[i].balance,
+								redemptiondate: response.data.data.data[i].email,
 							});
 						}
 						setItems(sample);

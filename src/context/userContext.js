@@ -1,12 +1,23 @@
 import React, { useState, createContext } from "react";
 
 const userContext = createContext(null);
+const UserRoleContextConsumer = userContext.Consumer;
 
 export const UserProvider = ({ children }) => {
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [isMerchant, setIsMerchant] = useState(false);
 	const [isUser, setIsUser] = useState(false);
+	const [userDetails, setUserDetails] = useState({
+		isLoggedIn: false,
+	});
 
+	const updateContext = (data) => {
+		const { isLoggedIn } = data;
+
+		setUserDetails({
+			isLoggedIn,
+		});
+	};
 	const getAdminPanel = () => {
 		setIsAdmin(!isAdmin);
 		console.log(isAdmin);
@@ -33,10 +44,12 @@ export const UserProvider = ({ children }) => {
 	return (
 		<userContext.Provider
 			value={{
+				...userDetails,
 				isAdmin,
 				isMerchant,
 				isUser,
 				getAdminPanel,
+				updateContext: updateContext,
 				getMerchantPanel,
 				getUserPanel,
 			}}>
@@ -45,4 +58,4 @@ export const UserProvider = ({ children }) => {
 	);
 };
 
-export default userContext;
+export { userContext, UserRoleContextConsumer };

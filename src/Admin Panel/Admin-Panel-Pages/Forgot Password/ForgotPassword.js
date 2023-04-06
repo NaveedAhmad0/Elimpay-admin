@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import API from "../../../backend";
 
 const ResetPassword = () => {
 	const [email, setEmail] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [success, setSuccess] = useState(false);
-	const token = sessionStorage.getItem("token");
+	// const token = sessionStorage.getItem("token");
 
 	async function onSubmit(event) {
 		event.preventDefault();
@@ -14,17 +15,16 @@ const ResetPassword = () => {
 
 		try {
 			const response = await axios.put(
-				`https://ixipay.ixiono.com/api/Admin/forgot-password?email=${email}`,
+				`${API}Admin/forgot-password?email=${email}`,
 				JSON.stringify({ newPassword }),
 				{
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
+						// Authorization: `Bearer ${token}`,
 					},
 					// withCredentials: true,
 				}
 			);
-			console.log("mail", email);
 
 			console.log(JSON.stringify(response?.data));
 

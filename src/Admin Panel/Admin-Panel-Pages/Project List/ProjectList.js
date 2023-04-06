@@ -45,22 +45,20 @@ const ProjectList = () => {
 					console.log("res is", response);
 
 					const sample = [];
-					for (let i = 0; i < response.data.length; i += 1) {
+					for (let i = 0; i < response.data.data.length; i += 1) {
 						sample.push({
-							id: response.data[i].id,
-							projectName: response.data[i].projectName,
+							id: response.data.data[i].id,
+							projectName: response.data.data[i].projectName,
 							QR: (
 								<img
-									src={`data:image/png;base64,${response.data[i].qrImage}`}
+									src={`data:image/png;base64,${response.data.data[i].qrImage}`}
 									alt="QR"
 									width={190}
 									style={{ borderRadius: "0" }}
 								/>
 							),
-							description: response.data[i].description,
-							// status:
-							// 	response.data[i].status === true ? "completed" : "pending",
-							redemptiondate: response.data[i].projectName,
+							description: response.data.data[i].description,
+							redemptiondate: response.data.data[i].projectName,
 						});
 						// setInvoiceRefId(response.data[i].invoiceRefId);
 					}
@@ -101,26 +99,12 @@ const ProjectList = () => {
 			classes: "deal-row",
 			headerClasses: "deal-header",
 		},
-		// {
-		// 	dataField: "QR",
-		// 	text: "QR code",
-		// 	classes: "deal-row-2",
-
-		// 	headerClasses: "deal-header",
-		// },
-
 		{
 			dataField: "description",
 			text: "description",
 			classes: "deal-row",
 			headerClasses: "deal-header",
 		},
-		// {
-		// 	dataField: "status",
-		// 	text: "Payment Status",
-		// 	classes: "deal-row",
-		// 	headerClasses: "deal-header",
-		// },
 		{
 			dataField: "View",
 			isDummyField: true,
@@ -130,32 +114,17 @@ const ProjectList = () => {
 				return customFunction(cellContent, row);
 			},
 		},
-		// {
-		// 	dataField: "name",
-		// 	isDummyField: true,
-		// 	text: "Edit role",
-		// 	headerClasses: "deal-header",
-		// 	formatter: (cellContent, row) => {
-		// 		return customFunction(cellContent, row);
-		// 	},
-		// },
 	];
 	console.log("list of item", ittems);
 	const customFunction = (cellContent, row) => {
 		return (
 			<h5>
-				{/* <Link to="/admin/getUserProfile"> */}
 				<button
 					href
 					alt="issueimageload"
 					className="btn btn-success"
-					// src={Edit}
 					onClick={() => {
 						// eslint-disable-next-line no-restricted-globals
-						// history.push({
-						// 	pathname: "/merchant/deposits-to-merchant",
-						// 	state: { invoiceId: row.id },
-						// });
 						axios
 							.delete(
 								`https://backend.elimpay.com/api/Admin/delete-project/${row.id}`,
@@ -164,7 +133,6 @@ const ProjectList = () => {
 										"Content-Type": "application/json",
 										Authorization: `Bearer ${token}`,
 									},
-									// withCredentials: true,
 								}
 							)
 							.then((res) => {
@@ -175,11 +143,9 @@ const ProjectList = () => {
 					}}>
 					Delete
 				</button>
-				{/* </Link> */}
 			</h5>
 		);
 	};
-	// list.map((list)=>{})
 
 	return (
 		<div>
@@ -222,11 +188,17 @@ const ProjectList = () => {
 															placeholder="Search ..."
 														/>
 														<hr />
-														<BootstrapTable
-															{...props.baseProps}
-															headerClasses={{ backgroundColor: "red" }}
-															pagination={paginationFactory(options)}
-														/>
+														{ittems.length > 0 ? (
+															<BootstrapTable
+																{...props.baseProps}
+																headerClasses={{ backgroundColor: "red" }}
+																pagination={paginationFactory(options)}
+															/>
+														) : (
+															<p className="text-danger text-center">
+																No Projects Found !
+															</p>
+														)}
 													</div>
 												)}
 											</ToolkitProvider>

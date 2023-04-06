@@ -44,18 +44,19 @@ const WithdrawalRequest = () => {
 						// withCredentials: true,
 					})
 					.then((response) => {
+						console.log(response);
 						const sample = [];
 
-						for (let i = 0; i < response.data.data.length; i += 1) {
+						for (let i = 0; i < response.data.data.data.length; i += 1) {
 							sample.push({
-								user_id: response.data.data[i].user_id,
-								email: response.data.data[i].email,
+								user_id: response.data.data.data[i].user_id,
+								email: response.data.data.data[i].email,
 
-								mobileNum: response.data.data[i].mobileNum,
-								name: response.data.data[i].name,
-								occupation: response.data.data[i].occupation,
-								payerName: response.data.data[i].occupation,
-								amount: response.data.data[i].occupation,
+								mobileNum: response.data.data.data[i].mobileNum,
+								name: response.data.data.data[i].name,
+								occupation: response.data.data.data[i].occupation,
+								payerName: response.data.data.data[i].occupation,
+								amount: response.data.data.data[i].occupation,
 							});
 						}
 						setItems(sample);

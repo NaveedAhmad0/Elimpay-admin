@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-// import "./NewInvoice.css";
 
 import { Redirect, useHistory } from "react-router-dom";
 import { FileUploader } from "react-drag-drop-files";
@@ -16,8 +15,8 @@ function CreateProject() {
 	const history = useHistory();
 	const fileTypes = ["JPG", "PNG", "GIF"];
 
-	const merchantId = localStorage.getItem("merchantUid");
-	console.log(merchantId);
+	const token = sessionStorage.getItem("token");
+	// console.log(merchantId);
 
 	// useEffect(() => {
 	// 	const result = MOBILE_REGEX.test(mobile);
@@ -59,7 +58,10 @@ function CreateProject() {
 						image2: Base64ProjectImage2,
 					}),
 					{
-						headers: { "Content-Type": "application/json" },
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
 					}
 				)
 				.then((res) => {
@@ -90,7 +92,6 @@ function CreateProject() {
 							<div class="card-body">
 								<div className="row">
 									<div className="col-4">
-										{/* <h6 className="text-primary">General</h6> */}
 										<label className="heading">Project Name :</label>
 										<br />
 										<input
@@ -112,24 +113,7 @@ function CreateProject() {
 									</div>
 
 									<div className="col-4">
-										{/* <h6 className="text-primary">Billing</h6> */}
 										<label className="heading">Created By :</label> {""}
-										{/* {mobileFocus && validMobile ? (
-											<FontAwesomeIcon
-												icon={faCheck}
-												className={"text-success"}
-											/>
-										) : (
-											""
-										)}
-										{mobileFocus && !validMobile ? (
-											<FontAwesomeIcon
-												icon={faTimes}
-												className={"text-danger"}
-											/>
-										) : (
-											""
-										)} */}
 										<br />
 										<input
 											type="text"
