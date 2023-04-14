@@ -1,11 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-// import AdminTable from "../../Admin-Panel-Components/Admin-Panel-Table/AdminTable";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import Edit from "../../../assets/logo/K Live Pay.png";
 import { useHistory } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import API from "../../../backend";
@@ -30,7 +28,7 @@ const AdminManageUser = () => {
 
 	console.log("items is", ittems);
 	const token = sessionStorage.getItem("token");
-	// const edit = <faCake />;
+
 	useEffect(() => {
 		const getUserDetails = async () => {
 			try {

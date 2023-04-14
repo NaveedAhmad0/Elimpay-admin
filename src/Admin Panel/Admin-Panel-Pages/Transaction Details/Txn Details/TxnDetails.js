@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 // import Modal from "./modal/Modal-withdraw";
 import ClipLoader from "react-spinners/ClipLoader";
+import API from "../../../../backend";
 
 const TransactionDetails = () => {
 	const history = useHistory();
@@ -13,7 +14,7 @@ const TransactionDetails = () => {
 	const [showData, setShowData] = useState([
 		{
 			id: "",
-			hash: "",
+			message: "",
 			senderNum: "",
 			recieverNum: "",
 			amount: "",
@@ -23,18 +24,23 @@ const TransactionDetails = () => {
 
 	const location = useLocation();
 
-	const hash = location.state.hash;
+	const txnid = location.state.txnid;
+	const token = sessionStorage.getItem("token");
 
 	useEffect(() => {
 		axios
-			.get(
-				`https://backend.elimpay.com/api/transaction/details-of-transaction/${hash}`
-			)
+			.get(`${API}transaction/details-of-transaction/${txnid}`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				// withCredentials: true,
+			})
 			.then((res) => {
 				console.log("DATA", res.data);
 				setShowData({
 					id: res.data.id,
-					hash: res.data.hash,
+					message: res.data.message,
 					senderNum: res.data.senderNum,
 					recieverNum: res.data.recieverNum,
 					amount: res.data.amount,
@@ -76,8 +82,8 @@ const TransactionDetails = () => {
 													<td>{showData.id}</td>
 												</tr>
 												<tr>
-													<td>Hash</td>
-													<td>{showData.hash}</td>
+													<td>message</td>
+													<td>{showData.message}</td>
 												</tr>
 												<tr>
 													<td>Sender Number</td>
@@ -89,11 +95,15 @@ const TransactionDetails = () => {
 												</tr>
 												<tr>
 													<td>Amount</td>
-													<td>{showData.amount}</td>
+													<td>${showData.amount}</td>
 												</tr>
 												<tr>
 													<td>Created At</td>
-													<td>{showData.createdAt}</td>
+													<td>
+														{moment(showData.createdAt).format(
+															"DD/MM/YYYY, h:mm:ss a"
+														)}
+													</td>
 												</tr>
 											</tbody>
 										</table>

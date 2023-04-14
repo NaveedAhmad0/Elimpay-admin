@@ -1,4 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
@@ -54,19 +56,19 @@ const GetUserProfile = () => {
 		kycStatus,
 		role,
 	} = fetchData;
+
 	const [loading, setLoading] = useState(true);
 	const token = sessionStorage.getItem("token");
+
 	useEffect(() => {
-		// const loginemail = localStorage.getItem("email");
 		const userDataEmail = location.state.dataEmail;
-		console.log("Email is", location.state.dataEmail);
+
 		axios
 			.get(`${API}Admin/fetch-user-profile?email=${userDataEmail}`, {
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-				// withCredentials: true,
 			})
 			.then((res) => {
 				console.log(res);
@@ -96,8 +98,6 @@ const GetUserProfile = () => {
 				setTimeout(() => {
 					setLoading(false);
 				}, 3000);
-
-				// console.log("USER DATA IS ", res.data.user.merchantEmail);
 			});
 	}, []);
 
@@ -135,26 +135,23 @@ const GetUserProfile = () => {
 						)}
 
 						<div className="mt-2 mx-auto">
-							{/* <p className="text-white">
-								Merchant Code: <span className="text-warning">M010303</span>
-							</p> */}
 							<p className="text-white">
-								Email: <span className="text-warning">{email}</span>
+								Email: <span className="text-white">{email}</span>
 							</p>
 						</div>
 					</div>
 
 					<div className="col-12 grid-margin">
-						<h4 className="card-title fs-4">User Personal Information</h4>
+						<h4 className="card-title fs-4">User Personal Informationn</h4>
 
 						<div className="card userCard p-lg-2">
 							<div className={`card-body ${styles.usercardbody}`}>
 								<form className="row g-3 form-sample">
-									<div class="col-md-6">
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className="form-label ">
-											Merchant ID :
+											User ID :
 										</label>
 										<input
 											className="form-control"
@@ -162,47 +159,24 @@ const GetUserProfile = () => {
 											value={id}
 										/>
 									</div>
-									{/* <div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label">
-											Merchant Name English :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={name}
-										/>
-									</div> */}
-									<div class="col-md-6">
+
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className=" form-label">
-											Merchant Name :
+											User Name :
 										</label>
 										<input
 											className="form-control"
 											id="inputPassword4"
 											value={name}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label">
-											Email Address :
-										</label>
-										<input
-											className="form-control"
-											id="inputPassword4"
-											value={email}
 										/>
 									</div>
 								</form>
 								<br></br>
 								<br></br>
 								<form className="row g-3 form-sample">
-									<div class="col-md-6">
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className="form-label">
@@ -214,55 +188,8 @@ const GetUserProfile = () => {
 											value={name}
 										/>
 									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Email :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={email}
-										/>
-									</div>
-									{/* <div class="col-md-4">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Year of Birth :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={yearOfBirth}
-										/>
-									</div>
-									<div class="col-md-4">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Month Of Birth :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={monthOfBirth}
-										/>
-									</div>
-									<div class="col-md-4">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Day Of Birth :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={dayOfBirth}
-										/>
-									</div> */}
-									<div class="col-md-6">
+
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className="form-label ">
@@ -274,7 +201,7 @@ const GetUserProfile = () => {
 											value={mobileNum}
 										/>
 									</div>
-									<div class="col-md-6">
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className="form-label ">
@@ -290,7 +217,7 @@ const GetUserProfile = () => {
 								<br></br>
 								<br></br>
 								<form className="row g-3 form-sample">
-									<div class="col-md-6">
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className="form-label ">
@@ -302,7 +229,7 @@ const GetUserProfile = () => {
 											value={kycStatus}
 										/>
 									</div>
-									<div class="col-md-6">
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className="form-label ">
@@ -314,7 +241,7 @@ const GetUserProfile = () => {
 											value={pin}
 										/>
 									</div>
-									<div class="col-md-6">
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className="form-label">
@@ -326,7 +253,7 @@ const GetUserProfile = () => {
 											value={role}
 										/>
 									</div>
-									<div class="col-md-6">
+									<div className="col-md-6">
 										<label
 											htmlFor="exampleInputUsername1"
 											className="form-label ">
@@ -341,225 +268,16 @@ const GetUserProfile = () => {
 								</form>
 								<br></br>
 								<br></br>
-								{/* <form className="row g-3 form-sample">
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label">
-											Web Site :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={website}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label">
-											Linked in :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={linkedin}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Facebok :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={facebook}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Instagram :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={instagram}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label">
-											Other :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={other}
-										/>
-									</div>
-								</form> */}
-
-								{/* <form className="row g-3 form-sample">
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Copy Of Id Card (Up to 5mb):{" "}
-										</label>
-										<input className="form-control" id="inputEmail4" />
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Book Bank :
-										</label>
-										<input className="form-control" id="inputEmail4" />
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Company :{" "}
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={company}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label text-primary">
-											Bank Account :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={bankAccount}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Domestic :{" "}
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={domestic}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Rate Of QR Code :{" "}
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={rateQrCode}
-										/>
-									</div>
-								</form> */}
-
-								{/* <form className="row g-3 form-sample">
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label">
-											Logo :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={logo}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Other document: :{" "}
-										</label>
-										<input className="form-control" id="inputEmail4" />
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Bank :
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={bank}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Rnf Code :{" "}
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={rnfCode}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label ">
-											Inter :{" "}
-										</label>
-										<input
-											className="form-control"
-											id="inputEmail4"
-											value={inter}
-										/>
-									</div>
-									<div class="col-md-6">
-										<label
-											htmlFor="exampleInputUsername1"
-											className="form-label">
-											Rate Of Bar Code :{" "}
-										</label>
-										<input className="form-control" id="inputEmail4" />
-									</div>
-								</form> */}
 							</div>
 							<div className="row g-3 form-sample">
-								<h3>Transaction Hash of User</h3>
-								{tsxs.length > 0 ? (
-									<div className="col-12">
-										<TxnList tsxs={tsxs} />
-									</div>
-								) : (
-									<h5 className="text-center text-danger">
-										No Transactions Found !
-									</h5>
-								)}
+								{/* <h3>Transaction Hash of User</h3> */}
+
+								<div className="col-12">
+									<TxnList mobileNum={mobileNum} />
+								</div>
 							</div>
 						</div>
 						<br></br>
-						{/* <div className="text-center">
-							<button
-								type="button"
-								className="btn btn-success w-100 btn-lg rounded-pill">
-								{" "}
-								Finish{" "}
-							</button>
-						</div> */}
 					</div>
 				</div>
 			)}

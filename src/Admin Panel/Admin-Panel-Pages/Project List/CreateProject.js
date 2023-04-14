@@ -9,6 +9,7 @@ function CreateProject() {
 	const [createdBy, setCreatedBy] = useState("");
 	const [projectName, setProjectName] = useState("");
 	const [description, setDescription] = useState("");
+	const [longDesc, setLongDesc] = useState("");
 	const [projectImage, setProjectImage] = useState("");
 	const [projectImage2, setProjectImage2] = useState("");
 
@@ -54,6 +55,7 @@ function CreateProject() {
 						createdBy,
 						description,
 						projectName,
+						long_des: longDesc,
 						image: Base64ProjectImage,
 						image2: Base64ProjectImage2,
 					}),
@@ -71,6 +73,7 @@ function CreateProject() {
 					setProjectImage("");
 					setProjectImage2("");
 					setDescription("");
+					setLongDesc("");
 					setCreatedBy("");
 					history.push("/admin/projectsList");
 				});
@@ -90,133 +93,104 @@ function CreateProject() {
 					<div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 						<div class="card">
 							<div class="card-body">
-								<div className="row">
-									<div className="col-4">
-										<label className="heading">Project Name :</label>
-										<br />
-										<input
-											type="text"
-											style={{
-												boxSizing: "border-box",
-												width: "226px",
-												height: "40px",
-												left: "1124px",
-												top: "674px",
-												background: "#FFFFFF",
-												border: "1px solid #CBCCD3",
-												borderRadius: "4px",
-												// marginTop: "25px",
-											}}
-											onChange={(e) => setProjectName(e.target.value)}
-											value={projectName}
-										/>
+								<form onSubmit={onSubmit}>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="inputEmail4">Project Name</label>
+											<input
+												type="text"
+												class="form-control"
+												// id="inputEmail4"
+												placeholder="Project Name"
+												onChange={(e) => setProjectName(e.target.value)}
+												value={projectName}
+											/>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="inputPassword4">Created By</label>
+											<input
+												type="text"
+												class="form-control"
+												placeholder="Created By"
+												onChange={(e) => setCreatedBy(e.target.value)}
+												value={createdBy}
+											/>
+										</div>
 									</div>
-
-									<div className="col-4">
-										<label className="heading">Created By :</label> {""}
-										<br />
-										<input
-											type="text"
-											placeholder=""
-											style={{
-												boxSizing: "border-box",
-												width: "226px",
-												height: "40px",
-												left: "1124px",
-												top: "674px",
-												background: "#FFFFFF",
-												border: "1px solid #CBCCD3",
-												borderRadius: "4px",
-												marginTop: "-1px",
-											}}
-											onChange={(e) => setCreatedBy(e.target.value)}
-											value={createdBy}
-											// pattern="[0-9]*"
-											// aria-invalid={validMobile ? "false" : "true"}
-											required
-											// onFocus={() => setCreatedByFocus(true)}
-											// onBlur={() => setCreatedByFocus(false)}
-										></input>
-									</div>
-									<div className="col-4">
-										{/* <h6 className="text-primary">Address</h6> */}
-										<label className="heading">Description :</label> <br />
+									<div class="form-group">
+										<label for="exampleFormControlTextarea1">
+											Short description
+										</label>
 										<textarea
-											type="datetime-local"
-											className="form-control"
-											style={{
-												boxSizing: "border-box",
-												width: "226px",
-												height: "100px",
-												left: "1124px",
-												top: "674px",
-												background: "#FFFFFF",
-												border: "1px solid #CBCCD3",
-												borderRadius: "4px",
-											}}
+											class="form-control"
+											id="exampleFormControlTextarea1"
+											rows="3"
 											onChange={(e) => setDescription(e.target.value)}
 											value={description}></textarea>
 									</div>
-								</div>
-								<br />
-								<div className="row justify-content-between">
-									<div className="col-4">
-										{/* <h6 className="text-primary">General</h6> */}
-										<label className="heading">Upload Image:</label>
-										<br />
-										<FileUploader
-											style={{
-												maxWidth: "100%",
-												minWidth: "100%",
-												width: "100%",
-												height: "210px",
-												border: "1px solid black",
-												backgroundColor: "red",
-											}}
-											classes="file-upload"
-											handleChange={(e) => {
-												setProjectImage(e);
-											}}
-											name="file"
-											maxSize={2}
-											types={fileTypes}
-										/>
+
+									<div class="form-group">
+										<label for="exampleFormControlTextarea1">
+											Long Description
+										</label>
+										<textarea
+											class="form-control"
+											id="exampleFormControlTextarea1"
+											rows="3"
+											onChange={(e) => setLongDesc(e.target.value)}
+											value={longDesc}></textarea>
 									</div>
-									<div className="col-4">
-										{/* <h6 className="text-primary">General</h6> */}
-										<label className="heading">Upload Image:</label>
-										<br />
-										<FileUploader
-											style={{
-												maxWidth: "100%",
-												minWidth: "100%",
-												width: "100%",
-												height: "210px",
-												border: "1px solid black",
-												backgroundColor: "red",
-											}}
-											classes="file-upload"
-											handleChange={(e) => {
-												setProjectImage2(e);
-											}}
-											name="file"
-											maxSize={2}
-											types={fileTypes}
-										/>
+									<div class="form-row justify-content-between">
+										<div class="form-group col-md-5">
+											<label for="inputCity">Upload Image</label>
+											<FileUploader
+												style={{
+													maxWidth: "100%",
+													minWidth: "100%",
+													width: "100%",
+													height: "210px",
+													border: "1px solid black",
+													backgroundColor: "red",
+												}}
+												classes="file-upload"
+												handleChange={(e) => {
+													setProjectImage2(e);
+												}}
+												name="file"
+												maxSize={2}
+												types={fileTypes}
+											/>
+										</div>
+										<div class="form-group col-md-5">
+											<label for="inputState">Upload Image</label>
+											<FileUploader
+												style={{
+													maxWidth: "100%",
+													minWidth: "100%",
+													width: "100%",
+													height: "210px",
+													border: "1px solid black",
+													backgroundColor: "red",
+												}}
+												classes="file-upload"
+												handleChange={(e) => {
+													setProjectImage(e);
+												}}
+												name="file"
+												maxSize={2}
+												types={fileTypes}
+											/>
+										</div>
+										{/* <div class="form-group col-md-2">
+											<label for="inputZip">Zip</label>
+											<input type="text" class="form-control" id="inputZip" />
+										</div> */}
 									</div>
-								</div>
-								<div className="buttons">
-									<div>
-										<button
-											type="button"
-											class="btn btn-success mt-5 btn-block"
-											onClick={(e) => {
-												onSubmit(e);
-											}}>
-											Submit
-										</button>
-									</div>
-								</div>
+
+									<button type="submit" class="btn btn-primary">
+										Create
+									</button>
+								</form>
 							</div>
 						</div>
 						<br />

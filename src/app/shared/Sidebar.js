@@ -107,7 +107,7 @@ function Sidebar() {
 				<a
 					className="sidebar-brand brand-logo-mini text-white pt-3"
 					href="index.html">
-					<h5>IxiPay</h5>
+					<h5>Elimpay</h5>
 				</a>
 			</div>
 			<ul className="nav">
@@ -194,7 +194,7 @@ function Sidebar() {
 						</span>
 					</Link>
 				</li>
-				<li
+				{/* <li
 					className={
 						isPathActive("/dashboard") ? "nav-item active" : "nav-item"
 					}>
@@ -204,7 +204,7 @@ function Sidebar() {
 							<Trans>Registered Users</Trans>
 						</span>
 					</Link>
-				</li>
+				</li> */}
 				<li
 					className={
 						isPathActive("/basic-ui") ? "nav-item active" : "nav-item"
@@ -217,12 +217,24 @@ function Sidebar() {
 						data-toggle="collapse">
 						<i className="mdi mdi-crosshairs-gps menu-icon"></i>
 						<span className="menu-title">
-							<Trans>KYC Users List</Trans>
+							<Trans>User Management</Trans>
 						</span>
 						<i className="menu-arrow"></i>
 					</div>
 					<Collapse in={state.basicUiMenuOpen}>
 						<ul className="nav flex-column sub-menu">
+							<li className="nav-item">
+								{" "}
+								<Link
+									className={
+										isPathActive("/basic-ui/buttons")
+											? "nav-link active"
+											: "nav-link"
+									}
+									to="/admin/AdminManageUser">
+									<Trans>Registered users</Trans>
+								</Link>
+							</li>
 							<li className="nav-item">
 								{" "}
 								<Link
@@ -256,7 +268,7 @@ function Sidebar() {
 											: "nav-link"
 									}
 									to="/admin/KycCompletedUsers">
-									<Trans>kyc-completed-users</Trans>
+									<Trans>Kyc Completed Users</Trans>
 								</Link>
 							</li>
 						</ul>
@@ -274,7 +286,7 @@ function Sidebar() {
 						data-toggle="collapse">
 						<i className="mdi mdi-crosshairs-gps menu-icon"></i>
 						<span className="menu-title">
-							<Trans>User Profile</Trans>
+							<Trans>Admin Profile</Trans>
 						</span>
 						<i className="menu-arrow"></i>
 					</div>

@@ -8,6 +8,7 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Link, useHistory } from "react-router-dom";
 import API from "../../../backend";
+import { Button, Modal } from "react-bootstrap";
 const options = {
 	paginationSize: 4,
 	pageStartIndex: 1,
@@ -27,6 +28,17 @@ const ProjectList = () => {
 	const [ittems, setItems] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [deleteOk, setDeleteOk] = useState(false);
+	const [id, setId] = useState("");
+
+	const [show, setShow] = useState(false);
+
+	const handleClose = () => setShow(false);
+	const handleShow = () => {
+		console.log("CLOIJCSJ");
+		setShow(true);
+		// setId(row.id);
+	};
+
 	console.log("items is", ittems);
 	const token = sessionStorage.getItem("token");
 
@@ -57,7 +69,9 @@ const ProjectList = () => {
 									style={{ borderRadius: "0" }}
 								/>
 							),
-							description: response.data.data[i].description,
+							description:
+								response.data.data[i].description &&
+								`${response.data.data[i].description.slice(0, 80)}....`,
 							redemptiondate: response.data.data[i].projectName,
 						});
 						// setInvoiceRefId(response.data[i].invoiceRefId);
@@ -108,21 +122,72 @@ const ProjectList = () => {
 		{
 			dataField: "View",
 			isDummyField: true,
-			text: "Delete",
+			text: "View/Delete",
 			headerClasses: "deal-header",
 			formatter: (cellContent, row) => {
 				return customFunction(cellContent, row);
 			},
 		},
 	];
+
 	console.log("list of item", ittems);
 	const customFunction = (cellContent, row) => {
 		return (
-			<h5>
+			<>
+				{/* <Button variant="primary" onClick={handleShow}>
+					Launch demo modal
+				</Button>
+				<Modal
+					style={{ opacity: 1 }}
+					fade={false}
+					show={show}
+					onHide={handleClose}>
+					<Modal.Header closeButton>
+						<Modal.Title>Delete Project</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>Are You Sure You Want to delete this project?</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary" onClick={handleClose}>
+							Close
+						</Button>
+						<Button
+							variant="primary"
+							onClick={() => {
+								// eslint-disable-next-line no-restricted-globals
+								axios
+									.delete(
+										`https://backend.elimpay.com/api/Admin/delete-project/${id}`,
+										{
+											headers: {
+												"Content-Type": "application/json",
+												Authorization: `Bearer ${token}`,
+											},
+										}
+									)
+									.then((res) => {
+										alert(res.data.message);
+										setDeleteOk(!deleteOk);
+									});
+							}}>
+							Save Changes
+						</Button>
+					</Modal.Footer>
+				</Modal> */}
+				<button
+					className="btn btn-success"
+					onClick={() => {
+						history.push({
+							pathname: "/admin/ProjectDetails",
+							state: { dataEmail: row.email },
+						});
+					}}>
+					View
+				</button>
+				/
 				<button
 					href
 					alt="issueimageload"
-					className="btn btn-success"
+					className="btn btn-danger"
 					onClick={() => {
 						// eslint-disable-next-line no-restricted-globals
 						axios
@@ -142,8 +207,8 @@ const ProjectList = () => {
 						console.log("sent email", row.id);
 					}}>
 					Delete
-				</button>
-			</h5>
+				</button>{" "}
+			</>
 		);
 	};
 
@@ -151,6 +216,7 @@ const ProjectList = () => {
 		<div>
 			<div className="d-flex justify-content-between">
 				<h2 className="text-primary bw-bold">Projects List</h2>
+
 				<div>
 					<Link to="/admin/CreateProject">
 						<button className="btn btn-success">Add Project</button>

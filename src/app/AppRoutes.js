@@ -100,6 +100,9 @@ const TxnDetails = lazy(() =>
 		"../Admin Panel/Admin-Panel-Pages/Transaction Details/Txn Details/TxnDetails"
 	)
 );
+const ProjectDetails = lazy(() =>
+	import("../Admin Panel/Admin-Panel-Pages/Project List/ProjectDetails")
+);
 
 function AppRoutes() {
 	const loggedIn = (
@@ -138,6 +141,7 @@ function AppRoutes() {
 			<Route path="/admin/projectsList" component={ProjectList} />
 			<Route path="/admin/CreateProject" component={CreateProject} />
 			<Route path="/admin/TxnDetails" component={TxnDetails} />
+			<Route path="/admin/ProjectDetails" component={ProjectDetails} />
 		</Switch>
 	);
 
