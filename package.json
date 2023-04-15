@@ -4,9 +4,6 @@
 	"homepage": "/admin/login",
 	"private": true,
 	"dependencies": {
-		"@chakra-ui/react": "^2.5.5",
-		"@emotion/react": "^11.10.6",
-		"@emotion/styled": "^11.10.6",
 		"@fortawesome/fontawesome-svg-core": "^6.2.0",
 		"@fortawesome/free-solid-svg-icons": "^6.2.0",
 		"@fortawesome/react-fontawesome": "^0.2.0",
@@ -34,7 +31,6 @@
 		"dotenv": "^16.0.3",
 		"flag-icon-css": "^3.3.0",
 		"font-awesome": "^4.7.0",
-		"framer-motion": "^10.12.2",
 		"i18next": "^19.0.0",
 		"i18next-browser-languagedetector": "^4.0.1",
 		"namor": "^1.1.3",
