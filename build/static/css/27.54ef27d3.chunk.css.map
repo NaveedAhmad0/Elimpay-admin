@@ -1,1 +1,0 @@
-{"version":3,"sources":["projectDetails.css"],"names":[],"mappings":"AAAA,WAEI,eAAgB,CAChB,cACJ,CAEA,iBACI,eAAgB,CAChB,cAAe,CACf,UACJ","file":"27.54ef27d3.chunk.css","sourcesContent":["form label {\n    /* color:\t#B0B0B0; */\n    font-weight: 700;\n    font-size: 16px;\n}\n\ninput[type=\"text\"]{\n    font-weight: 500;\n    font-size: 16px;\n    color: #000000;\n}"]}

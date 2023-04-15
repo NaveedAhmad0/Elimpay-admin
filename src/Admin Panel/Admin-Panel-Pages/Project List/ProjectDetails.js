@@ -1,10 +1,54 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import API from "../../../backend";
+
 import "./projectDetails.css";
 const ProjectDetails = () => {
+	const [projDetails, setProjDetails] = useState({
+		id: "",
+		projectName: "",
+		orgsMobileNum: "",
+		description: "",
+		long_des: "",
+		image: "",
+		image2: "",
+		projStatus: "",
+		createdBy: "",
+		created_at: "",
+	});
+	const token = sessionStorage.getItem("token");
+	const location = useLocation();
+	const projId = location.state.projId;
+	useEffect(() => {
+		axios
+			.get(`${API}Admin/project-details-by-id?id=${projId}`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				// withCredentials: true,
+			})
+			.then((res) => {
+				console.log(res);
+				setProjDetails({
+					id: res.data.id,
+					projectName: res.data.projectName,
+					description: res.data.description,
+					image: res.data.image,
+					image2: res.data.image2,
+					long_des: res.data.long_des,
+					orgsMobileNum: res.data.orgsMobileNum,
+					created_at: res.data.created_at,
+					createdBy: res.data.createdBy,
+				});
+			});
+	}, []);
+
 	return (
 		<div>
 			<div className="container form-1">
-				<h4 className="text-secondary mt-5 mb-5 ">Overview</h4>
+				<h4 className=" mt-5 mb-5 ">Project Details</h4>
 				<form className="row g-3">
 					<div className="col-md-6">
 						<label for="inputEmail4" className="form-label">
@@ -13,45 +57,45 @@ const ProjectDetails = () => {
 						<input
 							type="text"
 							readonly
-							className="form-control-plaintext"
-							id=""
-							value="1"
+							className="form-control-plaintext text-muted"
+							// id=""
+							value={projDetails.id}
 						/>
 					</div>
 					<div className="col-md-6">
 						<label for="inputPassword4" className="form-label">
-							Customer
+							Project Name
 						</label>
 						<input
 							type="text"
 							readonly
 							className="form-control-plaintext text-primary"
 							id=""
-							value="Schulist-Rosenbaum"
+							value={projDetails.projectName}
 						/>
 					</div>
 					<div className="col-md-6">
 						<label for="inputEmail4" className="form-label">
-							Billing Type
+							Created By
 						</label>
 						<input
 							type="text"
 							readonly
-							className="form-control-plaintext"
+							className="form-control-plaintext text-muted"
 							id=""
-							value="Fixed Rate"
+							value={projDetails.createdBy}
 						/>
 					</div>
 					<div className="col-md-6">
 						<label for="inputPassword4" className="form-label">
-							Total Rate
+							Created at
 						</label>
 						<input
 							type="text"
 							readonly
-							className="form-control-plaintext"
+							className="form-control-plaintext text-muted"
 							id=""
-							value="$2,500.00"
+							value={projDetails.created_at}
 						/>
 					</div>
 					<div className="col-md-6">
@@ -61,57 +105,43 @@ const ProjectDetails = () => {
 						<input
 							type="text"
 							readonly
-							className="form-control-plaintext"
+							className="form-control-plaintext text-muted"
 							id=""
-							value="In Progress"
+							value={projDetails.projStatus}
 						/>
 					</div>
 					<div className="col-md-6">
 						<label for="inputPassword4" className="form-label">
-							Date Created
+							Organsier Mobile
 						</label>
 						<input
 							type="text"
 							readonly
-							className="form-control-plaintext"
+							className="form-control-plaintext text-muted"
 							id=""
-							value="2023-06-12"
+							value={
+								projDetails.orgsMobileNum ? projDetails.orgsMobileNum : "Nil"
+							}
 						/>
 					</div>
-					<div className="col-md-6">
-						<label for="inputEmail4" className="form-label">
-							Total Logged Hours
-						</label>
-						<input
-							type="text"
-							readonly
-							className="form-control-plaintext"
-							id=""
-							value="00:00"
-						/>
-					</div>
-					<div className="col-md-6">
-						<label for="inputPassword4" className="form-label">
-							Tags
-						</label>{" "}
-						<br />
-						<button type="button" className="btn btn-outline-secondary px-3">
-							Wordpress
-						</button>
-					</div>
+
 					<div className="form-group">
 						<label for="exampleFormControlTextarea1">Description</label>
 						<textarea
 							className="form-control"
 							id="exampleFormControlTextarea1"
-							rows="3"></textarea>
+							rows="3"
+							value={projDetails.description}></textarea>
 					</div>
 					<div className="form-group mb-5">
 						<label for="exampleFormControlTextarea1">Long Description</label>
 						<textarea
 							className="form-control"
 							id="exampleFormControlTextarea1"
-							rows="3"></textarea>
+							rows="3"
+							value={projDetails.long_des}>
+							{projDetails.long_des}
+						</textarea>
 					</div>
 				</form>
 			</div>

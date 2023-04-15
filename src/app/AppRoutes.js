@@ -107,21 +107,34 @@ const ProjectDetails = lazy(() =>
 function AppRoutes() {
 	const loggedIn = (
 		<Switch>
-			<Route exact path="/admin/dashboard" component={AdminDashboard} />
+			<Route path="/admin/dashboard" component={AdminDashboard} exact />
 
-			<Route path="/admin/KycPendingUsers" component={KycPendingUser} />
-			<Route path="/admin/KycCompletedUsers" component={KycCompletedUsers} />
+			<Route path="/admin/KycPendingUsers" component={KycPendingUser} exact />
+			<Route
+				path="/admin/KycCompletedUsers"
+				component={KycCompletedUsers}
+				exact
+			/>
 			<Route
 				path="/admin/KycCompletePartners"
 				component={KycCompletePartners}
+				exact
 			/>
-			<Route path="/admin/KycPendingPartners" component={KycPendingPartners} />
-			<Route path="/admin/WithdrawalDetails" component={WithdrawalDetails} />
-			<Route path="/admin/AdminVoid" component={AdminVoid} />
-			<Route path="/admin/AdminRefund" component={AdminRefund} />
-			<Route path="/admin/update-profile" component={AdminProfile} />
-			<Route path="/admin/get-profile" component={GetAdminProfile} />
-			<Route exact path="/admin/getUserProfile" component={GetUserProfile} />
+			<Route
+				path="/admin/KycPendingPartners"
+				component={KycPendingPartners}
+				exact
+			/>
+			<Route
+				path="/admin/WithdrawalDetails"
+				component={WithdrawalDetails}
+				exact
+			/>
+			<Route path="/admin/AdminVoid" component={AdminVoid} exact />
+			<Route path="/admin/AdminRefund" component={AdminRefund} exact />
+			<Route path="/admin/update-profile" component={AdminProfile} exact />
+			<Route path="/admin/get-profile" component={GetAdminProfile} exact />
+			<Route path="/admin/getUserProfile" component={GetUserProfile} exact />
 			<Route
 				exact
 				path="/admin/getMerchantProfile"
@@ -130,42 +143,49 @@ function AppRoutes() {
 			<Route
 				path="/admin/AdminChangePassword"
 				component={AdminChangePassword}
+				exact
 			/>
-			<Route path="/admin/TransactionDetails" component={TransactionDetails} />
+			<Route
+				path="/admin/TransactionDetails"
+				component={TransactionDetails}
+				exact
+			/>
 			<Route
 				path="/admin/AdminMerchantProfile"
 				component={AdminMerchantProfile}
+				exact
 			/>
-			<Route path="/admin/AdminManageUser" component={AdminManageUser} />
-			<Route path="/admin/AdminManageRole" component={AdminManageRole} />
-			<Route path="/admin/projectsList" component={ProjectList} />
-			<Route path="/admin/CreateProject" component={CreateProject} />
-			<Route path="/admin/TxnDetails" component={TxnDetails} />
-			<Route path="/admin/ProjectDetails" component={ProjectDetails} />
+			<Route path="/admin/AdminManageUser" component={AdminManageUser} exact />
+			<Route path="/admin/AdminManageRole" component={AdminManageRole} exact />
+			<Route path="/admin/projectsList" component={ProjectList} exact />
+			<Route path="/admin/CreateProject" component={CreateProject} exact />
+			<Route path="/admin/TxnDetails" component={TxnDetails} exact />
+			<Route path="/admin/ProjectDetails" component={ProjectDetails} exact />
 		</Switch>
 	);
 
 	const notLoggedIn = (
 		<Switch>
-			{/* <Route exact path="/homepage" component={HomePage} /> */}
-			{/* <Route exact path="/homepage" component={UserLogin} /> */}
-			<Route path="/admin/basic-ui/buttons" component={Buttons} />
-			<Route path="/admin/basic-ui/dropdowns" component={Dropdowns} />
-			<Route exact path="/admin/forgotPassword" component={ForgotPassword} />
+			{/* <Route exact path="/homepage" component={HomePage} exact /> */}
+			{/* <Route exact path="/homepage" component={UserLogin} exact /> */}
+			<Route path="/admin/basic-ui/buttons" component={Buttons} exact />
+			<Route path="/admin/basic-ui/dropdowns" component={Dropdowns} exact />
+			<Route path="/admin/forgotPassword" component={ForgotPassword} exact />
 
 			<Route
 				path="/admin/form-Elements/basic-elements"
 				component={BasicElements}
+				exact
 			/>
 
-			<Route path="/admin/tables/basic-table" component={BasicTable} />
+			<Route path="/admin/tables/basic-table" component={BasicTable} exact />
 
-			<Route path="/admin/icons/mdi" component={Mdi} />
+			<Route path="/admin/icons/mdi" component={Mdi} exact />
 
-			<Route path="/admin/charts/chart-js" component={ChartJs} />
+			<Route path="/admin/charts/chart-js" component={ChartJs} exact />
 
-			<Route path="/admin/user-pages/login-1" component={Login} />
-			<Route path="/admin/user-pages/register-1" component={Register1} />
+			<Route path="/admin/user-pages/login-1" component={Login} exact />
+			<Route path="/admin/user-pages/register-1" component={Register1} exact />
 
 			{/*------------------------- ADMIN PANEL ROUTES -------------------------- */}
 			<Route exact path="/admin/login" component={AdminLogin} />
@@ -173,7 +193,7 @@ function AppRoutes() {
 			<Route path="/admin/error-pages/error-404" component={Error404} />
 			<Route path="/admin/error-pages/error-500" component={Error500} />
 
-			<Redirect to="/admin/login" />
+			<Redirect to="/admin/login" exact />
 		</Switch>
 	);
 	return (

@@ -178,7 +178,7 @@ const ProjectList = () => {
 					onClick={() => {
 						history.push({
 							pathname: "/admin/ProjectDetails",
-							state: { dataEmail: row.email },
+							state: { projId: row.id },
 						});
 					}}>
 					View
