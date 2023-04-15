@@ -19,6 +19,10 @@ const TransactionDetails = () => {
 			recieverNum: "",
 			amount: "",
 			createdAt: "",
+			recieverEmail: "",
+			recieverName: "",
+			recieverType: "",
+			transactionType: "",
 		},
 	]);
 
@@ -44,6 +48,11 @@ const TransactionDetails = () => {
 					senderNum: res.data.senderNum,
 					recieverNum: res.data.recieverNum,
 					amount: res.data.amount,
+					recieverEmail: res.data.recieverEmail,
+					recieverName: res.data.recieverName,
+					recieverType: res.data.recieverType,
+					transactionType: res.data.transactionType,
+
 					createdAt: res.data.createdAt,
 
 					// notes: res.data[i].note,
@@ -86,6 +95,10 @@ const TransactionDetails = () => {
 													<td>{showData.message}</td>
 												</tr>
 												<tr>
+													<td>Amount</td>
+													<td>${showData.amount}</td>
+												</tr>
+												<tr>
 													<td>Sender Number</td>
 													<td>{showData.senderNum}</td>
 												</tr>
@@ -94,9 +107,22 @@ const TransactionDetails = () => {
 													<td>{showData.recieverNum}</td>
 												</tr>
 												<tr>
-													<td>Amount</td>
-													<td>${showData.amount}</td>
+													<td>Reciever Email</td>
+													<td>{showData.recieverEmail}</td>
 												</tr>
+												<tr>
+													<td>Reciever Name</td>
+													<td>{showData.recieverName}</td>
+												</tr>
+												<tr>
+													<td>Reciever Type</td>
+													<td>{showData.recieverType}</td>
+												</tr>
+												<tr>
+													<td>Transaction Type</td>
+													<td>{showData.transactionType}</td>
+												</tr>
+
 												<tr>
 													<td>Created At</td>
 													<td>

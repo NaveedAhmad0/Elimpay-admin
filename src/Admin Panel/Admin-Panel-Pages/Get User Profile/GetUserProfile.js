@@ -103,7 +103,7 @@ const GetUserProfile = () => {
 
 	return (
 		<div className="col-12 grid-margin userProfileMain">
-			<h4 className="card-title fs-3">Personal Admin Information</h4>
+			<h4 className="card-title fs-3">User Personal Information</h4>
 			{loading ? (
 				<div className="row" style={{ height: "500px" }}>
 					<div className="col-12 text-center my-auto">
@@ -112,15 +112,15 @@ const GetUserProfile = () => {
 				</div>
 			) : (
 				<div className="card userProfileCard-2 ">
-					<div
+					{/* <div
 						className="row flex-column mt-5 mx-auto card text-white w-30 mb-5"
 						style={{
 							backgroundColor: "#007BFF",
 							fontWeight: "500",
 							lineHeight: "1",
 							fontSize: "10px",
-						}}>
-						{profileImg ? (
+						}}> */}
+					{/* {profileImg ? (
 							<img
 								className="profile-img mt-3 mb-2"
 								src={profileImg}
@@ -132,17 +132,17 @@ const GetUserProfile = () => {
 								src={require("../../../assets/images/faces/face8.jpg")}
 								alt="Profile"
 							/>
-						)}
+						)} */}
 
-						<div className="mt-2 mx-auto">
+					{/* <div className="mt-2 mx-auto">
 							<p className="text-white">
 								Email: <span className="text-white">{email}</span>
 							</p>
-						</div>
-					</div>
+						</div> */}
+					{/* </div> */}
 
 					<div className="col-12 grid-margin">
-						<h4 className="card-title fs-4">User Personal Informationn</h4>
+						{/* <h4 className="card-title fs-4">User Personal Informationn</h4> */}
 
 						<div className="card userCard p-lg-2">
 							<div className={`card-body ${styles.usercardbody}`}>

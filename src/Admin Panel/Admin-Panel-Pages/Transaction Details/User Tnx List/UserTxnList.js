@@ -57,13 +57,16 @@ const TxnList = ({ mobileNum }) => {
 		const getUserDetails = async () => {
 			try {
 				await axios
-					.get(`${API}Admin/transaction-of-user/${mobileNum}`, {
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${token}`,
-						},
-						// withCredentials: true,
-					})
+					.get(
+						`${API}transaction/transaction-of-user/authenticate_for_admin/${mobileNum}`,
+						{
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: `Bearer ${token}`,
+							},
+							// withCredentials: true,
+						}
+					)
 					.then((response) => {
 						console.log("RES", response);
 						const sample = [];
