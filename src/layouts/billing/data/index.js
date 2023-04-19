@@ -56,13 +56,18 @@ export default function data() {
 				for (let i = 0; i < res.data.length; i++) {
 					sample.push({
 						id: (
-							<p
+							<MDTypography
+								component="a"
+								href="#"
+								variant="caption"
+								color="text"
+								fontWeight="medium"
 								onClick={(e) => {
-									setid1(e.target.innerHTML);
+									setid1(res.data[i].id);
 									// console.log(e.target.innerHTML);
 								}}>
 								{res.data[i].id}
-							</p>
+							</MDTypography>
 						),
 						recieverName: (
 							<MDTypography
@@ -70,7 +75,11 @@ export default function data() {
 								href="#"
 								variant="caption"
 								color="text"
-								fontWeight="medium">
+								fontWeight="medium"
+								onClick={(e) => {
+									setid1(res.data[i].id);
+									// console.log(e.target.innerHTML);
+								}}>
 								{res.data[i].recieverName}
 							</MDTypography>
 						),
@@ -80,7 +89,11 @@ export default function data() {
 								href="#"
 								variant="caption"
 								color="text"
-								fontWeight="medium">
+								fontWeight="medium"
+								onClick={(e) => {
+									setid1(res.data[i].id);
+									// console.log(e.target.innerHTML);
+								}}>
 								{res.data[i].recieverNum}
 							</MDTypography>
 						),
@@ -90,7 +103,11 @@ export default function data() {
 								href="#"
 								variant="caption"
 								color="text"
-								fontWeight="medium">
+								fontWeight="medium"
+								onClick={(e) => {
+									setid1(res.data[i].id);
+									// console.log(e.target.innerHTML);
+								}}>
 								{res.data[i].amount}
 							</MDTypography>
 						),
