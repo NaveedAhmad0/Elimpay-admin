@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -39,9 +40,10 @@ export default function data() {
 	const navigate = useNavigate();
 	const token = localStorage.getItem("token");
 
-	const [kycUsers, setKycUsers] = useState([]);
+	const [allUsers, setAllUsers] = useState([]);
+	const [deleteOk, setDeleteOk] = useState(false);
 
-	useEffect(() => {
+	const getAllUsers = () => {
 		axios
 			.get(`${API}Admin/get-all-users`, {
 				headers: {
@@ -86,22 +88,54 @@ export default function data() {
 							</MDTypography>
 						),
 						action: (
-							<MDButton size="small" variant="gradient" color="success">
-								<p
-									onClick={() => {
-										navigate("/get-users-profile", {
-											state: { userEmail: res.data.data.data[i].email },
-										});
-									}}>
-									View
-								</p>
-							</MDButton>
+							<>
+								<MDButton size="small" variant="gradient" color="success">
+									<p
+										onClick={() => {
+											navigate("/get-users-profile", {
+												state: { userEmail: res.data.data.data[i].email },
+											});
+										}}>
+										View
+									</p>
+								</MDButton>
+								/
+								<MDButton size="small" variant="gradient" color="warning">
+									<p
+										onClick={() => {
+											axios
+												.delete(
+													`${API}/Admin/delete-user/${res.data.data.data[i].id}`,
+													{
+														headers: {
+															"Content-Type": "application/json",
+															Authorization: `Bearer ${token}`,
+														},
+													}
+												)
+												.then((res) => {
+													alert(res.data.message);
+													setDeleteOk(!deleteOk);
+												});
+										}}>
+										Delete
+									</p>
+								</MDButton>
+							</>
 						),
 					});
 				}
-				setKycUsers(sample);
+				setAllUsers(sample);
 			});
+	};
+
+	useEffect(() => {
+		getAllUsers();
 	}, []);
+
+	useEffect(() => {
+		getAllUsers();
+	}, [deleteOk]);
 
 	const Author = ({ image, name, email }) => (
 		<MDBox display="flex" alignItems="center" lineHeight={1}>
@@ -136,7 +170,7 @@ export default function data() {
 			{ Header: "mobile", accessor: "mobile", align: "center" },
 			{ Header: "action", accessor: "action", align: "center" },
 		],
-		rows: kycUsers,
+		rows: allUsers,
 
 		// rows: [
 		//   {

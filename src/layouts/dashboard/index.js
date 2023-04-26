@@ -43,165 +43,165 @@ import API from "backend";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
-  const [numberOfProjects, setNumberOfProjects] = useState(0);
-  const [ittems, setItems] = useState([]);
-  const [totalUsers, setTotalUsers] = useState(0);
-  const [completedProjects, setCompletedProjects] = useState(1);
-  const [kycPending, setKycPendingUsers] = useState(0);
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  console.log("items is", ittems);
-  const getUserDetails = async () => {
-    try {
-      await axios
-        .get(`${API}Admin/get-all-projects`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          // withCredentials: true,
-        })
-        .then((response) => {
-          console.log(response.data);
-          setNumberOfProjects(response.data.data.length);
-          const sample = [];
-          for (let i = 0; i < response.data.length; i += 1) {
-            sample.push({
-              id: response.data[i].id,
-              projectName: response.data[i].projectName,
-              description: response.data[i].description.slice(0, 10),
-            });
-          }
-          setItems(sample);
-          // setLoading(false);
-          setTimeout(() => {
-            // setLoading(false);
-          }, 3000);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const { sales, tasks } = reportsLineChartData;
+	const [numberOfProjects, setNumberOfProjects] = useState(0);
+	const [ittems, setItems] = useState([]);
+	const [totalUsers, setTotalUsers] = useState(0);
+	const [completedProjects, setCompletedProjects] = useState(0);
+	const [kycPending, setKycPendingUsers] = useState(0);
+	const navigate = useNavigate();
+	const token = localStorage.getItem("token");
+	console.log("items is", ittems);
+	const getUserDetails = async () => {
+		try {
+			await axios
+				.get(`${API}Admin/get-all-projects`, {
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					// withCredentials: true,
+				})
+				.then((response) => {
+					// console.log(response.data);
+					setNumberOfProjects(response.data.data.length);
+					const sample = [];
+					for (let i = 0; i < response.data.length; i += 1) {
+						sample.push({
+							id: response.data[i].id,
+							projectName: response.data[i].projectName,
+							description: response.data[i].description.slice(0, 10),
+						});
+					}
+					setItems(sample);
+					// setLoading(false);
+					setTimeout(() => {
+						// setLoading(false);
+					}, 3000);
+				});
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-  const getNumberOfUsers = async () => {
-    await axios
-      .get(`${API}Admin/get-all-users`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        // withCredentials: true,
-      })
-      .then((res) => {
-        console.log("RE", res);
-        setTotalUsers(res.data.data.data.length);
-      });
-  };
-  const getCompletedProjects = async () => {
-    await axios
-      .get(`${API}Admin/completed-projects`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        // withCredentials: true,
-      })
-      .then((res) => {
-        console.log("co", res);
-        setCompletedProjects(res.data.length);
-      });
-  };
-  const getKycPendingUsers = async () => {
-    await axios
-      .get(`${API}Admin/kyc-pending-users`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        // withCredentials: true,
-      })
-      .then((res) => {
-        console.log("RE", res);
-        setKycPendingUsers(res.data.data.data.length);
-      });
-  };
+	const getNumberOfUsers = async () => {
+		await axios
+			.get(`${API}Admin/get-all-users`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				// withCredentials: true,
+			})
+			.then((res) => {
+				// console.log("RE", res);
+				setTotalUsers(res.data.data.data.length);
+			});
+	};
+	const getCompletedProjects = async () => {
+		await axios
+			.get(`${API}Admin/completed-projects`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				// withCredentials: true,
+			})
+			.then((res) => {
+				console.log("co", res);
+				setCompletedProjects(res.data.data.length);
+			});
+	};
+	const getKycPendingUsers = async () => {
+		await axios
+			.get(`${API}Admin/kyc-pending-users`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				// withCredentials: true,
+			})
+			.then((res) => {
+				setKycPendingUsers(res.data.data.data.length);
+			});
+	};
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/authentication/sign-in");
-    } else {
-      (async () => await getKycPendingUsers())();
-      (async () => await getNumberOfUsers())();
-      (async () => await getUserDetails())();
-    }
-  }, []);
+	useEffect(() => {
+		if (!token) {
+			navigate("/authentication/sign-in");
+		} else {
+			(async () => await getKycPendingUsers())();
+			(async () => await getNumberOfUsers())();
+			(async () => await getCompletedProjects())();
+			(async () => await getUserDetails())();
+		}
+	}, []);
 
-  return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Total users"
-                count={totalUsers}
-                percentage={{
-                  color: "success",
+	return (
+		<DashboardLayout>
+			<DashboardNavbar />
+			<MDBox py={3}>
+				<Grid container spacing={3}>
+					<Grid item xs={12} md={6} lg={3}>
+						<MDBox mb={1.5}>
+							<ComplexStatisticsCard
+								color="dark"
+								icon="weekend"
+								title="Total users"
+								count={totalUsers}
+								percentage={{
+									color: "success",
 
-                  label: "Total Number of users",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Total projects"
-                count={numberOfProjects}
-                percentage={{
-                  color: "success",
+									label: "Total Number of users",
+								}}
+							/>
+						</MDBox>
+					</Grid>
+					<Grid item xs={12} md={6} lg={3}>
+						<MDBox mb={1.5}>
+							<ComplexStatisticsCard
+								icon="leaderboard"
+								title="Total projects"
+								count={numberOfProjects}
+								percentage={{
+									color: "success",
 
-                  label: "Total number of projects",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="KYC Pending"
-                count={kycPending}
-                percentage={{
-                  color: "success",
+									label: "Total number of projects",
+								}}
+							/>
+						</MDBox>
+					</Grid>
+					<Grid item xs={12} md={6} lg={3}>
+						<MDBox mb={1.5}>
+							<ComplexStatisticsCard
+								color="success"
+								icon="store"
+								title="KYC Pending"
+								count={kycPending}
+								percentage={{
+									color: "success",
 
-                  label: "KYC pending users",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Competed Projects"
-                count={completedProjects}
-                percentage={{
-                  color: "success",
-                  label: "Completed projects",
-                }}
-              />
-            </MDBox>
-          </Grid>
-        </Grid>
-        {/* <MDBox mt={4.5}>
+									label: "KYC pending users",
+								}}
+							/>
+						</MDBox>
+					</Grid>
+					<Grid item xs={12} md={6} lg={3}>
+						<MDBox mb={1.5}>
+							<ComplexStatisticsCard
+								color="primary"
+								icon="person_add"
+								title="Competed Projects"
+								count={completedProjects}
+								percentage={{
+									color: "success",
+									label: "Completed projects",
+								}}
+							/>
+						</MDBox>
+					</Grid>
+				</Grid>
+				{/* <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
@@ -242,20 +242,20 @@ function Dashboard() {
             </Grid>
           </Grid>
         </MDBox> */}
-        <MDBox>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={8}>
-              <Projects />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
-          </Grid>
-        </MDBox>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
-  );
+				<MDBox>
+					<Grid container spacing={3}>
+						<Grid item xs={12} md={6} lg={8}>
+							<Projects />
+						</Grid>
+						<Grid item xs={12} md={6} lg={4}>
+							<OrdersOverview />
+						</Grid>
+					</Grid>
+				</MDBox>
+			</MDBox>
+			<Footer />
+		</DashboardLayout>
+	);
 }
 
 export default Dashboard;

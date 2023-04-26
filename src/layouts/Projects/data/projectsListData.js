@@ -37,13 +37,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import API from "backend";
 import { useNavigate } from "react-router-dom";
+import MDInput from "components/MDInput";
+import { FormControlLabel, Switch } from "@mui/material";
 
 export default function data() {
 	const token = localStorage.getItem("token");
 
 	const [projectsList, setprojectsList] = useState([]);
+	const [marked, setMarked] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
-	useEffect(() => {
+
+	const getProjectsList = () => {
 		axios
 			.get(`${API}Admin/get-all-projects`, {
 				headers: {
@@ -53,6 +58,7 @@ export default function data() {
 			})
 			.then((res) => {
 				console.log(res);
+
 				const sample = [];
 				for (let i = 0; i < res.data.data.length; i++) {
 					sample.push({
@@ -68,49 +74,97 @@ export default function data() {
 							</MDTypography>
 						),
 						description:
-							res.data.data[i].description &&
-							`${res.data.data[i].description.slice(0, 80)}....`,
-						projStatus: res.data.data[i].projStatus,
-						action: (
-							<MDButton size="small" variant="gradient" color="success">
-								<p
-									onClick={() => {
-										navigate("/projectDetails", {
-											state: { projId: res.data.data[i].id },
-										});
-									}}>
-									View
-								</p>
-							</MDButton>
+							res.data.data[i].short_desc &&
+							`${res.data.data[i].short_desc.slice(0, 80)}....`,
+						projStatus: (
+							<FormControlLabel
+								sx={{
+									display: "block",
+								}}
+								control={
+									<Switch
+										checked={
+											res.data.data[i].projectStatus === "Inactive"
+												? false
+												: true
+										}
+										onChange={() => {
+											axios
+												.put(
+													`${API}Admin/mark-as-active?projectId=${res.data.data[i].id}`,
+													JSON.stringify({}),
+													{
+														headers: {
+															"Content-Type": "application/json",
+															Authorization: `Bearer ${token}`,
+														},
+													}
+												)
+												.then((res) => {
+													console.log(res);
+
+													setMarked(!marked);
+													alert(res.data.message);
+												});
+										}}
+									/>
+								}
+								label={
+									res.data.data[i].projectStatus === "Inactive"
+										? "Inactive"
+										: "Active"
+								}
+							/>
 						),
-						action2: (
-							<MDButton size="small" variant="gradient" color="warning">
-								<p
-									onClick={() => {
-										axios
-											.delete(
-												`https://backend.elimpay.com/api/Admin/delete-project/${res.data.data[i].id}`,
-												{
-													headers: {
-														"Content-Type": "application/json",
-														Authorization: `Bearer ${token}`,
-													},
-												}
-											)
-											.then((res) => {
-												alert(res.data.message);
-												// setDeleteOk(!deleteOk);
+						action: (
+							<>
+								<MDButton size="small" variant="gradient" color="success">
+									<p
+										onClick={() => {
+											navigate("/projectDetails", {
+												state: { projId: res.data.data[i].id },
 											});
-									}}>
-									Delete
-								</p>
-							</MDButton>
+										}}>
+										View
+									</p>
+								</MDButton>
+								/
+								<MDButton size="small" variant="gradient" color="warning">
+									<p
+										onClick={() => {
+											axios
+												.delete(
+													`https://backend.elimpay.com/api/Admin/delete-project/${res.data.data[i].id}`,
+													{
+														headers: {
+															"Content-Type": "application/json",
+															Authorization: `Bearer ${token}`,
+														},
+													}
+												)
+												.then((res) => {
+													alert(res.data.message);
+													// setDeleteOk(!deleteOk);
+												});
+										}}>
+										Delete
+									</p>
+								</MDButton>
+							</>
 						),
 					});
 				}
 				setprojectsList(sample);
 			});
+	};
+
+	useEffect(() => {
+		getProjectsList();
 	}, []);
+
+	useEffect(() => {
+		getProjectsList();
+	}, [marked]);
 
 	const Author = ({ image, name, projectName }) => (
 		<MDBox display="flex" alignItems="center" lineHeight={1}>
@@ -142,9 +196,9 @@ export default function data() {
 			{ Header: "Id", accessor: "id", width: "15%", align: "left" },
 			{ Header: "projectName", accessor: "projectName", align: "left" },
 			{ Header: "description", accessor: "description", align: "center" },
-			// { Header: "projStatus", accessor: "projStatus", align: "center" },
+			{ Header: "projStatus", accessor: "projStatus", align: "center" },
 			{ Header: "action", accessor: "action", align: "center" },
-			{ Header: "Delete", accessor: "action2", align: "center" },
+			// { Header: "Delete", accessor: "action2", align: "center" },
 		],
 		rows: projectsList,
 	};

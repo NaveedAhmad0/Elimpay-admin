@@ -57,81 +57,88 @@ import API from "backend";
 import { useLocation } from "react-router-dom";
 
 function Overview() {
-  const location = useLocation();
+	const location = useLocation();
 
-  const projid = location.state.projId;
-  const token = localStorage.getItem("token");
-  const [projDetails, setProjDetails] = useState({
-    id: "",
-    projectName: "",
-    orgsMobileNum: "",
-    description: "",
-    long_des: "",
-    image: "",
-    image2: "",
-    projStatus: "",
-    createdBy: "",
-    created_at: "",
-  });
+	const projid = location.state.projId;
+	const token = localStorage.getItem("token");
+	const [projDetails, setProjDetails] = useState({
+		id: "",
+		projectName: "",
+		orgsMobileNum: "",
+		short_desc: "",
+		projectCreaterType: "",
+		long_desc: "",
+		image: "",
+		image2: "",
+		projStatus: "",
+		balance: "",
+		projectCompleted: "",
+	});
 
-  useEffect(() => {
-    axios
-      .get(`${API}Admin/project-details-by-id?id=${projid}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        // withCredentials: true,
-      })
-      .then((res) => {
-        console.log("hula", res);
-        setProjDetails({
-          id: res.data.id,
-          projectName: res.data.projectName,
-          description: res.data.description,
-          image: res.data.image,
-          image2: res.data.image2,
-          long_des: res.data.long_des,
-          orgsMobileNum: res.data.orgsMobileNum,
-          created_at: res.data.created_at,
-          createdBy: res.data.createdBy,
-        });
-      });
-  }, []);
+	useEffect(() => {
+		axios
+			.get(`${API}Admin/project-details-by-id?id=${projid}`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				// withCredentials: true,
+			})
+			.then((res) => {
+				console.log("hula", res);
+				setProjDetails({
+					id: res.data.id,
+					projectName: res.data.projectName,
+					short_desc: res.data.short_desc,
+					image: res.data.image,
+					image2: res.data.image2,
+					projectCreaterType: res.data.projectCreaterType,
+					long_desc: res.data.long_desc,
+					creatersMobileNum: res.data.creatersMobileNum,
+					projectCompleted: res.data.projectCompleted,
+					balance: res.data.balance,
+					created_at: res.data.created_at,
+				});
+			});
+	}, []);
 
-  return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox mb={2} />
-      <Header>
-        <MDBox mt={5} mb={3}>
-          <Grid container spacing={1}>
-            {/* <Grid item xs={12} md={6} xl={4}>
+	return (
+		<DashboardLayout>
+			<DashboardNavbar />
+			<MDBox mb={2} />
+			<Header>
+				<MDBox mt={5} mb={3}>
+					<Grid container spacing={1}>
+						{/* <Grid item xs={12} md={6} xl={4}>
               <PlatformSettings />
             </Grid> */}
-            <Grid item xs={12} md={6} xl={12} sx={{ display: "flex" }}>
-              <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
-              <ProfileInfoCard
-                title="Description"
-                description={projDetails.description}
-                info={{
-                  projectName: projDetails.projectName,
-                  organisersMobile: projDetails.orgsMobileNum,
-                  createdBy: projDetails.createdBy,
-                  // created_at: projDetails.created_at,
-                  about: projDetails.long_des,
-                }}
-                action={{ route: "", tooltip: "Edit Profile" }}
-                shadow={false}
-              />
-              <Divider orientation="vertical" sx={{ mx: 0 }} />
-            </Grid>
-            {/* <Grid item xs={12} xl={4}>
+						<Grid item xs={12} md={6} xl={12} sx={{ display: "flex" }}>
+							<Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
+							<ProfileInfoCard
+								title="Description"
+								description={projDetails.short_desc}
+								info={{
+									projectName: projDetails.projectName,
+									organisersMobile: projDetails.creatersMobileNum,
+									balance: projDetails.balance,
+									projectCompleted:
+										projDetails.projectCompleted === false
+											? "Incomplete"
+											: "Completed",
+									about: projDetails.long_desc,
+									created_at: projDetails.created_at,
+								}}
+								action={{ route: "", tooltip: "Edit Profile" }}
+								shadow={false}
+							/>
+							<Divider orientation="vertical" sx={{ mx: 0 }} />
+						</Grid>
+						{/* <Grid item xs={12} xl={4}>
               <ProfilesList title="conversasdftions" profiles={profilesListData} shadow={false} />
             </Grid> */}
-          </Grid>
-        </MDBox>
-        {/* <MDBox pt={2} px={2} lineHeight={1.25}>
+					</Grid>
+				</MDBox>
+				{/* <MDBox pt={2} px={2} lineHeight={1.25}>
           <MDTypography variant="h6" fontWeight="medium">
             Projects
           </MDTypography>
@@ -141,7 +148,7 @@ function Overview() {
             </MDTypography>
           </MDBox>
         </MDBox> */}
-        {/* <MDBox p={2}>
+				{/* <MDBox p={2}>
           <Grid container spacing={6}>
             <Grid item xs={12} md={6} xl={3}>
               <DefaultProjectCard
@@ -245,10 +252,10 @@ function Overview() {
             </Grid>
           </Grid>
         </MDBox> */}
-      </Header>
-      <Footer />
-    </DashboardLayout>
-  );
+			</Header>
+			<Footer />
+		</DashboardLayout>
+	);
 }
 
 export default Overview;

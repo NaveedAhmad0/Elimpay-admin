@@ -48,193 +48,229 @@ import axios from "axios";
 import API from "backend";
 
 function Cover() {
-  const [projectName, setProjectName] = useState("");
-  const [description, setDescription] = useState("");
-  const [createdBy, setCreatedBy] = useState("");
-  const [long_desc, setLongDesc] = useState("");
-  const [projectImage, setProjectImage] = useState("");
-  const [projectImage2, setProjectImage2] = useState("");
+	const [projectName, setProjectName] = useState("");
+	const [descr, setDescr] = useState("");
+	const [CreatorType, setCreatorType] = useState("Elimpay User");
+	// const [createdBy, setCreatedBy] = useState("");
+	const [creatersMobileNum, setCreatersMobileNum] = useState("");
+	const [long_desc, setLongDesc] = useState("");
+	const [images, setImages] = useState([]);
 
-  const fileTypes = ["JPG", "PNG", "GIF"];
-  const token = localStorage.getItem("token");
-  const naviagte = useNavigate();
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
+	const fileTypes = ["JPG", "PNG", "GIF"];
+	const token = localStorage.getItem("token");
+	const naviagte = useNavigate();
 
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
+	const convertBase64 = (file) => {
+		return new Promise((resolve, reject) => {
+			const fileReader = new FileReader();
+			fileReader.readAsDataURL(file);
 
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+			fileReader.onload = () => {
+				resolve(fileReader.result);
+			};
 
-  async function onSubmit(event) {
-    // const Base64ProjectImage = await convertBase64(projectImage[0]);
-    // const Base64ProjectImage2 = await convertBase64(projectImage2[0]);
+			fileReader.onerror = (error) => {
+				reject(error);
+			};
+		});
+	};
+	// const fileSelectedHandler = (file) => {
+	// 	let addedFiles = images.concat(file);
+	// 	setImages([addedFiles]);
+	// 	console.log("upload file " + file.name);
+	// };
 
-    event.preventDefault();
-    // console.log(description, projectName, Base64ProjectImage, createdBy);
-    // 44ba3429-c02c-430d-b6e9-2d51f6a2527f
-    try {
-      await axios
-        .post(
-          `${API}Admin/create-project`,
-          JSON.stringify({
-            createdBy,
-            description,
-            projectName,
-            long_des: long_desc,
-            image: projectImage,
-            image2: projectImage2,
-          }),
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((res) => {
-          // console.log(res);
-          alert(res.data.message);
-          setProjectName("");
-          setProjectImage("");
-          setProjectImage2("");
-          setDescription("");
-          setLongDesc("");
-          setCreatedBy("");
-          naviagte("/projects");
-        });
-      // }
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
+	useEffect(() => {
+		console.log("IMAGE", images);
+	}, [images]);
 
-  const getFiles = (files) => {
-    setProjectImage(files);
-  };
-  const getFiles2 = (files) => {
-    setProjectImage2(files);
-  };
+	const getFiles = (files) => {
+		setImages({ files });
+	};
 
-  return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <Card>
-        <MDBox
-          variant="gradient"
-          bgColor="info"
-          borderRadius="lg"
-          coloredShadow="success"
-          mx={2}
-          mt={3}
-          p={2}
-          mb={1}
-          textAlign="left"
-        >
-          <MDTypography variant="h5" fontWeight="medium" color="white" mt={1}>
-            Add New Project
-          </MDTypography>
-          {/* <MDTypography display="block" variant="button" color="white" my={1}>
+	async function onSubmit(event) {
+		// const Base64ProjectImage = await convertBase64(images);
+		// const Base64ProjectImage2 = await convertBase64(projectImage2[0]);
+
+		event.preventDefault();
+		// const formData = new FormData();
+		// for (let i = 0; i < images.length; i++) {
+		// 	formData.append(`images[${i}]`, images[0]);
+		// }
+		try {
+			await axios
+				.post(
+					`${API}Admin/create_project?creater_type=${CreatorType}`,
+					JSON.stringify({
+						creatersMobileNum,
+						short_desc: descr,
+						projectName,
+						long_desc: long_desc,
+						images: images.files,
+					}),
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				)
+				.then((res) => {
+					// console.log(res);
+					alert(res.data.message);
+					setProjectName("");
+					setImages([]);
+					setDescr("");
+					setLongDesc("");
+					// setCreatedBy("");
+					naviagte("/projects");
+				});
+			// }
+		} catch (err) {
+			console.log(err.message);
+		}
+	}
+
+	// const getFiles2 = (files) => {
+	// 	setProjectImage2(files);
+	// };
+
+	return (
+		<DashboardLayout>
+			<DashboardNavbar />
+			<Card>
+				<MDBox
+					variant="gradient"
+					bgColor="info"
+					borderRadius="lg"
+					coloredShadow="success"
+					mx={2}
+					mt={3}
+					p={2}
+					mb={1}
+					textAlign="left">
+					<MDTypography variant="h5" fontWeight="medium" color="white" mt={1}>
+						Add New Project
+					</MDTypography>
+					{/* <MDTypography display="block" variant="button" color="white" my={1}>
             Enter your email and password to register
           </MDTypography> */}
-        </MDBox>
-        <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form">
-            <MDBox mb={2}>
-              <MDInput
-                type="text"
-                label="Project Name"
-                variant="standard"
-                onChange={(e) => {
-                  setProjectName(e.target.value);
-                }}
-                value={projectName}
-                fullWidth
-              />
-            </MDBox>
-            <MDBox mb={2}>
-              <MDInput
-                type="email"
-                label="Created By"
-                variant="standard"
-                onChange={(e) => {
-                  setCreatedBy(e.target.value);
-                }}
-                value={createdBy}
-                fullWidth
-              />
-            </MDBox>
+				</MDBox>
+				<MDBox pt={4} pb={3} px={3}>
+					<MDBox component="form" role="form">
+						<MDBox mb={2}>
+							<MDInput
+								type="text"
+								label="Project Name"
+								variant="standard"
+								onChange={(e) => {
+									setProjectName(e.target.value);
+								}}
+								value={projectName}
+								fullWidth
+							/>
+						</MDBox>
+						{/* <MDBox mb={2}>
+							<MDInput
+								type="email"
+								label="Created By"
+								variant="standard"
+								onChange={(e) => {
+									setCreatedBy(e.target.value);
+								}}
+								value={createdBy}
+								fullWidth
+							/>
+						</MDBox> */}
+						<MDBox mb={2}>
+							<MDInput
+								type="email"
+								label="Creator Mobile"
+								variant="standard"
+								onChange={(e) => {
+									setCreatersMobileNum(e.target.value);
+								}}
+								value={creatersMobileNum}
+								fullWidth
+							/>
+						</MDBox>
 
-            <MDBox mb={2}>
-              <FormControl
-                fullWidth
-                variant="standard"
-                sx={{ height: "150px", marginBottom: "20px" }}
-              >
-                <InputLabel htmlFor="standard-adornment-amount">Description</InputLabel>
-                <Input
-                  id="standard-adornment-amount"
-                  multiline
-                  // startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  label="Description"
-                  onChange={(e) => {
-                    setDescription(e.target.value);
-                  }}
-                  value={description}
-                  sx={{ height: "150px" }}
-                />
-              </FormControl>{" "}
-            </MDBox>
-            <MDBox mb={2}>
-              <FormControl
-                fullWidth
-                variant="standard"
-                sx={{ height: "150px", marginBottom: "20px" }}
-              >
-                <InputLabel htmlFor="standard-adornment-amount">Long Description</InputLabel>
-                <Input
-                  id="standard-adornment-amount"
-                  multiline
-                  label="Long Description"
-                  onChange={(e) => {
-                    setLongDesc(e.target.value);
-                  }}
-                  value={long_desc}
-                  sx={{ height: "150px" }}
-                />
-              </FormControl>{" "}
-            </MDBox>
-            <MDBox
-              display="flex"
-              alignItems="center"
-              ml={1}
-              sx={{ display: "flex", justifyContent: "space-between" }}
-            >
-              {/* <Checkbox /> */}
-              <MDBox mb={2}>
-                <label>Upload Photo</label> <br />
-                <FileBase64
-                  type="file"
-                  multiple={false}
-                  className="hi"
-                  onDone={({ base64 }) => setProjectImage(base64)}
-                  style={{
-                    maxWidth: "100%",
-                    minWidth: "100%",
-                    width: "100%",
-                    height: "210px",
-                    border: "1px solid black",
-                    backgroundColor: "red",
-                  }}
-                />
-                {/* <FileUploader
+						<MDBox mb={2}>
+							<FormControl
+								fullWidth
+								variant="standard"
+								sx={{ height: "150px", marginBottom: "20px" }}>
+								<InputLabel htmlFor="standard-adornment-amount2">
+									Description
+								</InputLabel>
+								<Input
+									id="standard-adornment-amount"
+									multiline
+									label="Long Description"
+									onChange={(e) => {
+										setDescr(e.target.value);
+									}}
+									value={descr}
+									sx={{ height: "150px" }}
+								/>
+							</FormControl>{" "}
+						</MDBox>
+						<MDBox mb={2}>
+							<FormControl
+								fullWidth
+								variant="standard"
+								sx={{ height: "150px", marginBottom: "20px" }}>
+								<InputLabel htmlFor="standard-adornment-amount">
+									Long Description
+								</InputLabel>
+								<Input
+									id="standard-adornment-amount"
+									multiline
+									label="Long Description"
+									onChange={(e) => {
+										setLongDesc(e.target.value);
+									}}
+									value={long_desc}
+									sx={{ height: "150px" }}
+								/>
+							</FormControl>{" "}
+						</MDBox>
+						<MDBox
+							display="flex"
+							alignItems="center"
+							ml={1}
+							sx={{ display: "flex", justifyContent: "space-between" }}>
+							{/* <Checkbox /> */}
+							<MDBox mb={2}>
+								<label>Upload Photo</label> <br />
+								{/* <MDBox> */}
+								{/* <FormControl fullWidth variant="standard">
+									<input
+										id="standard-adornment-amount"
+										type="file"
+										multiple
+										label="Project Image"
+										onChange={(e) => {
+											setImages(e.target.files);
+										}}
+									/>
+								</FormControl>{" "} */}
+								{/* </MDBox> */}
+								<FileBase64
+									type="file"
+									multiple={true}
+									className="hi"
+									onDone={getFiles.bind()}
+									style={{
+										maxWidth: "100%",
+										minWidth: "100%",
+										width: "100%",
+										height: "210px",
+										border: "1px solid black",
+										backgroundColor: "red",
+									}}
+								/>
+								{/* <FileUploader
                   style={{
                     maxWidth: "100%",
                     minWidth: "100%",
@@ -252,15 +288,26 @@ function Cover() {
                   maxSize={2}
                   types={fileTypes}
                 /> */}
-              </MDBox>
-              <MDBox mb={2}>
-                <label>Upload Photo</label> <br />
-                <FileBase64
-                  type="file"
-                  multiple={false}
-                  onDone={({ base64 }) => setProjectImage2(base64)}
-                />
-                {/* <FileUploader
+							</MDBox>
+							{/* <MDBox mb={2}>
+								<label>Upload Photo</label> <br />
+								<FormControl fullWidth variant="standard">
+									<Input
+										id="standard-adornment-amount"
+										type="file"
+										label="Description"
+										onChange={(e) => {
+											setProjectImage2(e.target.value);
+										}}
+										value={description}
+									/>
+								</FormControl>{" "} */}
+							{/* <FileBase64
+									type="file"
+									multiple={false}
+									onDone={({ base64 }) => setProjectImage2(base64)}
+								/> */}
+							{/* <FileUploader
                   style={{
                     maxWidth: "100%",
                     minWidth: "100%",
@@ -277,18 +324,22 @@ function Cover() {
                   maxSize={2}
                   types={fileTypes}
                 /> */}
-              </MDBox>
-            </MDBox>
-            <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth onClick={onSubmit}>
-                Create
-              </MDButton>
-            </MDBox>
-          </MDBox>
-        </MDBox>
-      </Card>
-    </DashboardLayout>
-  );
+							{/* </MDBox> */}
+						</MDBox>
+						<MDBox mt={4} mb={1}>
+							<MDButton
+								variant="gradient"
+								color="info"
+								fullWidth
+								onClick={onSubmit}>
+								Create
+							</MDButton>
+						</MDBox>
+					</MDBox>
+				</MDBox>
+			</Card>
+		</DashboardLayout>
+	);
 }
 
 export default Cover;
